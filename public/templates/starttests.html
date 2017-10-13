@@ -1,0 +1,35 @@
+<!--sMKoNBRZM1M-->
+<section class="content c-subsciptions">
+	<div class="create-proj-cont projects-det">
+		<div class="checkout-cont row">
+			<div class="checkout-wrp pd">
+				<div class="project-wrp">
+					<h1 class="pd-title">{{course.title}}</h1>
+					<p class="pd-desc">{{course.description}}</p>
+					<div class="pd-about">
+						<ul class="pd-desc">
+							<li ng-repeat="t in course.tests track by $index">
+								<div class="course-section">
+									<p class="s-title">Test {{$index+1}}</p>
+									<h5>{{t.title}}</h5>
+									<p>{{t.description}}</p>
+									<p class="t-summary">
+										<span class="course-hours"><i class="fa fa-clock-o" aria-hidden="true"></i> {{t.minutes}} Minutes</span> | 
+										<span class="course-hours"><i class="fa fa-question-circle" aria-hidden="true"></i> {{t.totalQuestions}} Questions</span> | 
+										<span class="course-hours"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{t.marks}} Marks</span>
+									</p>
+									<div class="btn-wrapper text-right">
+										<a href="/start/test/:courseId/:testId" class="btn btn-xs btn-default btn-primary" ng-if="t.testCompletionStatus=='PENDING'">Continue Test</a>
+										<a href="/start/test/:courseId/:testId" class="btn btn-xs btn-default btn-primary" ng-if="t.testCompletionStatus!='PENDING'">Start Test</a>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+

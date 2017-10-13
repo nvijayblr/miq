@@ -1,0 +1,218 @@
+<!--Begin: Login Modal -->
+  <div class="modal fade loginModal" id="loginModal" role="dialog">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+		  <h4 class="modal-title">Login</h4>
+		</div>
+		<div class="modal-body">
+			<div class="login-wrp">
+				<form name="app.loginForm" ng-submit="app.loginForm.$valid && appLogin(loginSettings.email, loginSettings.password);" novalidate autocomplete="off">
+					<div class="login-section">
+						<label class="f-label">Email</label>
+						<md-input-container>
+							<label class="p-lable">Your Email</label>
+							<input type="email" ng-model="loginSettings.email" name="email" required ng-pattern='/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/'>
+							<div class="error-lable required">Email text field empty.</div>
+							<div class="error-lable format">Entering the invalid format.</div>
+						</md-input-container>
+
+						<label class="f-label">Password</label>
+						<md-input-container class="pwd-wrp" ng-if="showPassword">
+							<label class="p-lable">Password</label>
+							<input ng-model="loginSettings.password" type="password" required>
+							<a href="" class="show-pwd" ng-click="showHidePassword();">{{showPassword?'Show Password':'Hide Password'}}</a>
+							<div class="error-lable required">Password text field empty.</div>
+							<div class="error-lable format">Entering the invalid format.</div>
+						</md-input-container>
+
+						<md-input-container class="pwd-wrp" ng-if="!showPassword">
+							<label class="p-lable">Password</label>
+							<input ng-model="loginSettings.password" type="text" required>
+							<a href="" class="show-pwd" ng-click="showHidePassword();">{{showPassword?'Show Password':'Hide Password'}}</a>
+							<div class="error-lable required">Password text field empty.</div>
+							<div class="error-lable format">Entering the invalid format.</div>
+						</md-input-container>
+						<div class="forget-password">
+							<a href="" ng-click="showForgetPassword();">Forgot your Password?</a>
+						</div>
+						<button class="btn btn-default btn-subscribe btn-login" ng-click="app.loginForm.submit()">Login</button>
+						<div class="or-label">or</div>
+					</div>
+				</form>
+			</div>
+			<div class="login-social">
+				<div class="login-section">
+
+					<div class="google-btn-wrp">
+						<a class="btn btn-block btn-social btn-facebook" ng-disabled="!facebookReady" ng-click="loginWithFacebook()">
+							<span class="fa fa-facebook"></span> Sign in with Facebook
+						</a>
+						<a class="btn btn-block btn-social btn-google" id="googleLogin">
+							<span class="fa fa-google"></span> Sign in with Google
+						</a>						
+					</div>
+				</div>
+			</div>
+			<div class="sign-up-msg">
+				<p>Don't have account? <a href="" ng-click="showSignUp(signupFrom);">Sign up here</a></p>
+			</div>
+		</div>
+	  </div>
+	</div>
+  </div>
+<!--End: Login Modal -->
+
+<!--Begin: Signup Modal -->
+ <!--data-backdrop="static" data-keyboard="false"-->
+  <div class="modal fade loginModal" id="signUpModal" role="dialog">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+		  <h4 class="modal-title">Begin your great journey</h4>
+		</div>
+		<div class="modal-body">
+			<div class="login-social">
+				<div class="login-section">
+					<a class="btn btn-block btn-social btn-facebook" ng-disabled="!facebookReady" ng-click="loginWithFacebook()">
+						<span class="fa fa-facebook"></span> Sign in with Facebook
+					</a>
+					<a class="btn btn-block btn-social btn-google" id="googleSignup">
+						<span class="fa fa-google"></span> Sign in with Google
+					</a>						
+				</div>
+				<div class="or-label">or Sign up using</div>
+			</div>
+			<div class="login-wrp">
+				<form name="app.signupForm" ng-submit="app.signupForm.$valid && appSignup(signUpSettings.email, signUpSettings.password);" novalidate autocomplete="off">
+					<div class="login-section sign-login-section" style="padding-top: 0;">
+						<label class="f-label">Email</label>
+						<md-input-container>
+							<label class="p-lable">Your Email</label>
+							<input type="email" ng-model="signUpSettings.email" required ng-pattern='/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/'>
+							<div class="error-lable required">Email text field empty.</div>
+							<div class="error-lable format">Entering the invalid format.</div>
+						</md-input-container>
+
+						<label class="f-label">Password</label>
+						<md-input-container class="pwd-wrp" ng-if="showPassword">
+							<label class="p-lable">Choose a password</label>
+							<input ng-model="signUpSettings.password" type="password" required>
+							<a href="" class="show-pwd" ng-click="showHidePassword();">{{showPassword?'Show Password':'Hide Password'}}</a>
+							<div class="error-lable required">Password text field empty.</div>
+							<div class="error-lable format">Entering the invalid format.</div>
+						</md-input-container>
+
+						<md-input-container class="pwd-wrp" ng-if="!showPassword">
+							<label>Password</label>
+							<input ng-model="signUpSettings.password" type="text" required>
+							<a href="" class="show-pwd" ng-click="showHidePassword();">{{showPassword?'Show Password':'Hide Password'}}</a>
+							<div class="error-lable required">Password text field empty.</div>
+							<div class="error-lable format">Entering the invalid format.</div>
+						</md-input-container>
+						
+						<!--ng-click="showSignUpComplete();"-->
+						<div class="terms-wrp">
+							<p class="create-acc-msg">
+								<md-checkbox md-no-ink name="app.signupForm.agree" class="md-primary agree" ng-model="signUpSettings.agree" required>I agree to <a href="">terms &amp; conditions.</a>
+								<span class="error-lable">Please select the check box (Mandatory).</span>
+								</md-checkbox>
+							</p>
+						</div>
+						
+						<button class="btn btn-default btn-subscribe btn-login" ng-click="app.signupForm.submit()">Create Account</button>
+						<!--<p class="create-acc-msg">Lorem Ipsum is simply dummy text of the printing and 	typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>-->
+					</div>
+				</form>
+			</div>
+			<div class="sign-up-msg">
+				<p>Already have an account? <a href="" ng-click="showLogin(signupFrom);">Login here</a></p>
+			</div>
+		</div>
+	  </div>
+	</div>
+  </div>
+<!--End: Signup Modal -->
+
+<!--Begin: Signup Finish Modal -->
+  <div class="modal fade loginModal signUpFinishModal" id="signUpFinishModal" role="dialog">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<form name="app.signupFinishForm" ng-submit="app.signupFinishForm.$valid && finishSignup(signUpSettings.email, signUpSettings.password, signUpSettings.name);" novalidate autocomplete="off">
+		<div class="modal-body">
+			<div class="login-social">
+				<div class="login-section">
+					<h4>What do you want to see?</h4>
+					<div class="row">
+						<div class="col-md-12">
+							<ul class="interest clearfix">
+								<li ng-repeat="category in categoryList track by $index">
+									<md-checkbox md-no-ink class="md-primary">{{category.name}}</md-checkbox>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<h4>Name</h4>
+					<md-input-container>
+						<label class="p-lable">Your Name</label>
+						<input type="text" ng-model="signUpSettings.name" required>
+						<div class="error-lable">Name is required.</div>
+					</md-input-container>
+					<div class="social-connect">
+						<h4>Social Connect <span class="opt">(Optional)</span></h4>
+						<div class="conenect-wrp">
+						  <md-checkbox md-no-ink ng-model="data.cb1" aria-label="F" class="fb-cb social-cb">f</md-checkbox>
+						  <md-checkbox md-no-ink ng-model="data.cb2" aria-label="T" class="tw-cb social-cb">t</md-checkbox>
+						  <md-checkbox md-no-ink ng-model="data.cb3" aria-label="G" class="go-cb social-cb">g</md-checkbox>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="login-wrp">
+				<div class="login-section sign-login-section">
+					<p class="create-acc-msg">
+						<md-checkbox md-no-ink class="md-primary" ng-model="signUpSettings.agree" required>I agree to <a href="">terms &amp; conditions.</a></md-checkbox>
+					</p>
+					<button class="btn btn-default btn-subscribe btn-login" ng-click="app.signupFinishForm.submit();">Finish</button>
+				</div>
+			</div>
+		</div>
+		</form>
+	  </div>
+	</div>
+  </div>
+<!--End: Signup Modal -->
+
+
+<!--Begin: forget password Modal -->
+ <!--data-backdrop="static" data-keyboard="false"-->
+  <div class="modal fade loginModal" id="forgetPasswordModal" role="dialog">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+		  <h4 class="modal-title">Forgot your Password?</h4>
+		</div>
+		<div class="modal-body">
+			<div class="login-wrp">
+				<form name="app.forgetPassForm" ng-submit="app.forgetPassForm.$valid && appForgetPassword(signUpSettings.email);" novalidate autocomplete="off">
+					<div class="login-section sign-login-section">
+						<label class="f-label">Please enter your email ID. An email will be sent to you with password.</label>
+						<label class="f-label">Email</label>
+						<md-input-container>
+							<label class="p-lable">Your Email</label>
+							<input type="email" ng-model="signUpSettings.email" required ng-pattern='/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/'>
+							<div class="error-lable required">Email text field empty.</div>
+							<div class="error-lable format">Entering the invalid format.</div>
+						</md-input-container>
+						<button class="btn btn-default btn-subscribe btn-login" ng-click="app.forgetPassForm.submit()">SUBMIT</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	  </div>
+	</div>
+  </div>
+<!--End: Signup Modal -->

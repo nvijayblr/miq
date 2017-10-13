@@ -1,0 +1,210 @@
+<section class="dashboard-content">
+	<div class="container dashboard">
+		<div class="db-banner">
+			<div class="user-wrp prfile">
+				<div class="user-img">
+					<div ng-if="!user.profilePicture" class="db-profile-pic-small">{{user.name|getFirstLetter:user.name:user.email}}</div>
+					<div ng-if="user.profilePicture && user.loginType=='CUSTOM'" class="img" style="background-image: url(uploads/{{user.profilePicture}});"></div>
+					<div ng-if="user.profilePicture && (user.loginType=='GOOGLE' || user.loginType=='FACEBOOK')" class="img" style="background-image: url({{user.profilePicture}});"></div>
+				</div>
+			</div>
+			<h4 class="db-title">{{user.name}}</h4>
+			<p class="db-loc">{{user.city}}, {{user.country}}</p>
+		</div>
+		<div class="row" ng-init="tab=1">
+			<div class="profile-left">
+				<div class="tabs" ng-show="curUser">
+					<ul class="clearfix">
+						<li><a href="" ng-class="tab==1?'active':''" ng-click="tab=1;">My Subscriptions</a></li>
+						<li><a href="" ng-class="tab==2?'active':''" ng-click="tab=2;">Personal Details</a></li>
+						<li><a href="" ng-class="tab==3?'active':''" ng-click="tab=3;">Order Information</a></li>
+					</ul>
+				</div>
+				<!--Begin the My Project tab-->
+				<div class="my-proj-tab-content" ng-show="tab==1">
+					<div class="pc-wrp" ng-repeat="(key, courses) in allSubscriptions track by $index">
+						<div class="row btn-wrp first" ng-if="courses.length">
+							<h3 class="col-md-6 col-sm-6 col-xs-6 p-title">{{title[key]}}</h3>
+						</div>
+						<div class="my-project" ng-repeat="course in courses track by $index">
+							<div class="row project">
+								<div class="col-md-8">
+									<a href="#/subscriptions/{{course.type=='COURSE'?'course':'tests'}}/{{course.code}}" class="poster-title">
+										<div class="proj-banner-wrp">
+											<div ng-if="!course.coverImage" class="proj-banner" style="background-image: url(/assets/images/poster-bg.png);"></div>
+											<div ng-if="course.coverImage" class="proj-banner" style="background-image: url(uploads/{{course.coverImage}});"></div>
+											<div class="proj-info clearfix">
+												<div class="views">
+													<h5>{{course.viewsCount}}</h5>
+													<p><i class="fa fa-eye" aria-hidden="true"></i>Views</p>
+												</div>
+												<div class="comments">
+													<h5>{{course.likesCount}}</h5>
+													<p><i class="fa fa-heart" aria-hidden="true"></i>Likes</p>
+												</div>
+												<div class="likes">
+													<h5>{{course.commentsCount}}</h5>
+													<p><i class="fa fa-comments" aria-hidden="true"></i>Comments</p>
+												</div>
+											</div>
+										</div>
+									</a>
+                                    <p class="p-desc">
+										<a href="#/subscriptions/{{course.type=='COURSE'?'course':'tests'}}/{{course.code}}" class="poster-title">
+											{{course.title}}
+											<span class="status">{{course.enabled ? 'ACTIVE':'Expired'}}</span>
+										</a>
+									</p>
+									<p class="p-description">{{course.description}}</p>
+								</div>
+								<div class="col-md-4 statistics">
+									<h3 class="amount">{{course.subscribedOn | toDayMonthYYYY}}</h3>
+									<h4 class="s-title">Subscribed On</h4>
+									<h3 class="amount">{{course.duration}} Days</h3>
+									<h4 class="s-title">Duration</h4>
+									<h3 class="amount">{{course.subscribedOn | remainDays:course.duration}}</h3>
+									<h4 class="s-title">End By Date</h4>
+									<h3 class="amount">{{course.enabled ? 'Active':'Expired'}}</h3>
+									<h4 class="s-title">Status</h4>
+								</div>								
+								
+							</div>
+							<div class="db-actions" ng-if="curUser">
+								<div class="proj-btn-wrp">
+									<div class="extend-link" ng-if="course.enabled">
+										<a href="#/subscriptions/{{course.type=='COURSE'?'course':'tests'}}/{{course.code}}" class="btn btn-default btn-secondary">View {{course.type=='COURSE'?'Course':'Test'}}</a>
+									</div>
+									<div class="extend-link" ng-if="!course.enabled">
+										<a href="#/subscriptions/{{course.type=='COURSE'?'course':'tests'}}/{{course.code}}" class="btn btn-default btn-secondary">Subscribe {{course.type=='COURSE'?'Course':'Test'}}</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--End of the My Project tab-->
+
+				<!--Begin the Personal details tab-->
+				<div class="proj-steps-wrp personal-details" ng-show="tab==2" ng-show="curUser">
+					<div class="row">
+						<div class="col-md-5">
+							<form name="userProfileForm" ng-submit="updateUserProfile(user);" novalidate autocomplete="off">
+								<div class="steps-form">
+									<div class="input-wrp">
+										<label class="f-label">Upload Your Photo</label>
+										<div class="drag-drop-box drop-box user"  ng-show="!posterOriginalImg"
+											 ngf-select = "myCroppedProfileImage=undefined"
+											 ngf-drop = "myCroppedProfileImage=undefined"
+											 ng-model="userProfilePhoto" 
+											 name="userProfilePhoto" 
+											 ngf-pattern="'image/*'"
+											 ngf-accept="'image/*'" 
+											 ngf-max-size="10MB" 
+											 ngf-multiple="false"
+											 ngf-model-invalid="errorFile"
+											 id="profilePic">
+											<div class="upload-userphoto" ng-if="!user.profilePicture && !userProfilePhoto"></div>
+											<div class="user-img" ng-if="userProfilePhoto">
+												<!--<img ngf-size="{width: 356, height: 176}" ngf-thumbnail="userProfilePhoto">-->
+												<img ng-src="{{myCroppedProfileImage}}" width="100%"  height="100%"/>
+											</div>
+											<div class="user-img" ng-if="user.profilePicture && !userProfilePhoto">
+												<div class="user-photo" ng-if="user.loginType=='CUSTOM'" style="background-image:url(/uploads/{{user.profilePicture}})"></div>
+												<img class="user-photo" ng-if="(user.loginType=='GOOGLE' || user.loginType=='FACEBOOK')" ng-src="{{user.profilePicture}}" style="width:100%;">
+											</div>
+										</div>
+										<div ngf-drop ng-model="userProfilePhoto" ngf-pattern="image/*" class="cropArea" ng-show="userProfilePhoto">
+											<ui-cropper
+												image="userProfilePhoto  | ngfDataUrl" 
+												result-image="myCroppedProfileImage" 
+												area-type="circle"
+												result-width="myCroppedProfileImageW"
+												result-height="myCroppedProfileImageH"
+												canvas-scalemode="true">
+											</ui-cropper>
+										</div>
+									</div>
+									<div class="input-wrp">
+										<label class="f-label">Name</label>
+										<md-input-container>
+											<label class="ph-label">Your name</label>
+											<input type="text" ng-model="user.name">
+											<div class="error-lable">Name is required!</div>
+										</md-input-container>
+									</div>
+									<div class="input-wrp">
+										<label class="f-label">Mobile Number</label>
+										<md-input-container>
+											<label class="ph-label">Your mobile number</label>
+											<input type="text" ng-model="user.mobileNumber">
+											<div class="error-lable">Mobile number is required!</div>
+										</md-input-container>
+									</div>
+									<div class="input-wrp">
+										<label class="f-label">City</label>
+										<md-input-container>
+											<label class="ph-label">Your city</label>
+											<input type="text" ng-model="user.city">
+											<div class="error-lable">City is required!</div>
+										</md-input-container>
+									</div>
+									<div class="support-me update-user">
+										<button class="btn btn-default btn-lg btn-primary" ng-click="userProfileForm.submit()">Update Personal Details</button>
+									</div>						
+								</div>
+							</form>
+						</div>
+						<div class="col-md-2">
+							
+						</div>
+						<div class="col-md-5">
+							<div class="password-frm-wrp">	
+								<form name="userPasswordForm" ng-submit="updateUserPassword(userPassword);" novalidate autocomplete="off">
+									<div class="steps-form">
+										<div class="input-wrp">
+											<label class="f-label">Current Password</label>
+											<md-input-container>
+												<label class="ph-label">Current Password</label>
+												<input type="password" ng-model="userPassword.password" required>
+												<div class="error-lable">Current Password is required!</div>
+											</md-input-container>
+										</div>
+										<div class="input-wrp">
+											<label class="f-label">New Password</label>
+											<md-input-container>
+												<label class="ph-label">New Password</label>
+												<input type="password" ng-model="userPassword.newPassword" required>
+												<div class="error-lable">New Password is required!</div>
+											</md-input-container>
+										</div>
+										<div class="input-wrp">
+											<label class="f-label">Confirm New Password</label>
+											<md-input-container>
+												<label class="ph-label">Confirm New Password</label>
+												<input type="password" ng-model="userPassword.newPasswordVerify" required>
+												<div class="error-lable">Confirm New Password is required!</div>
+											</md-input-container>
+										</div>
+										<div class="support-me update-user">
+											<button class="btn btn-default btn-lg btn-primary" ng-click="userPasswordForm.submit()">Update Password</button>
+										</div>							
+									</div>
+								</form>
+							  </div>						
+						</div>
+					</div>
+				</div>
+				<!--End the Personal details tab-->
+
+				<!--Begin the Account details tab-->
+				<div class="proj-steps-wrp account-details" ng-show="tab==3" ng-if="curUser">
+					
+				</div>
+				<!--End the Account details tab-->
+
+			</div>
+			
+		
+		</div>
+	</div>
+</section>

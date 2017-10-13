@@ -1,0 +1,31 @@
+<section class="content admin">
+	<div class="create-proj-cont">
+		<div class="dashboard">
+			<div class="clearfix">
+				<div class="col-md-2 col-sm-11 col-xs-11 panel panel-left">
+					<div class="welcome">
+						<h3>Welcome</h3>
+						<h4>{{isSuperAdmin?'Super Admin':'Admin'}}</h4>
+					</div>
+					<ul class="left-nav">
+						<li><a href="#/admin/dashboard" ng-class="adminTab=='dashboard'?'active':''">Dashboard</a></li>
+						<li ng-if="isSuperAdmin"><a href="#/admin/admins" ng-class="adminTab=='admins'?'active':''">Manage Admins</a></li>
+						<li><a href="#/admin/users" ng-class="adminTab=='users'?'active':''">Manage Users</a></li>
+						<li><a href="#/admin/projects" ng-class="adminTab=='projects'?'active':''">Manage Campaigns</a></li>
+						<li><a href="#/admin/promotions" ng-class="adminTab=='promotions'?'active':''">Manage Promotions</a></li>
+						<li ng-if="isSuperAdmin"><a href="#/admin/payments" ng-class="adminTab=='payments'?'active':''">Manage Payments</a></li>
+						<li ng-if="isSuperAdmin"><a href="#/admin/category" ng-class="adminTab=='category'?'active':''">Manage Category</a></li>
+						<li ng-if="isSuperAdmin"><a href="#/admin/banks" ng-class="adminTab=='banks'?'active':''">Manage Banks</a></li>
+						<li ng-if="isSuperAdmin"><a href="#/admin/cities" ng-class="adminTab=='cities'?'active':''">Manage Cities</a></li>
+						<li><a href="#/admin/comments" ng-class="adminTab=='comments'?'active':''">Manage Comments</a></li>
+						<li><a href="#/admin/reports" ng-class="adminTab=='reports'?'active':''">Reports</a></li>
+						<li><a href="#/admin/account" ng-class="adminTab=='account'?'active':''">My Account</a></li>
+					</ul>
+				</div>
+				<div class="col-md-10 panel panel-right">
+					<div ui-view class="fade-view"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

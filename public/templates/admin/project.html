@@ -1,0 +1,380 @@
+<section class="proj-content admin">
+	<div class="container projects-det">
+		<div class="row">
+			<div class="col-md-8 pd">
+				<div class="project-carousel" ng-class="images.length==1?'single':''">
+					<ng-image-gallery
+						images="images"
+						methods="methods"
+						thumbnails="true"
+						thumb-size="1"
+						inline="true"
+						bubbles="true"
+						bubble-size="80"
+						img-bubbles="true"
+						bg-close="true"
+						piracy="false"
+						img-anim="fadeup"
+						on-open=""
+						on-close=""
+						on-delete=""></ng-image-gallery>
+					<!--<img src="assets/images/project-bg.jpg">-->
+				</div>
+				<h1 class="pd-title">{{project.title}}</h1>
+				<p class="pd-desc">{{project.description}}</p>
+				<div class="prod-design">
+					<h5><!--<i class="fa fa-tag" aria-hidden="true"></i>-->Share this Campaign</h5>
+					<div class="pd-soc-wrp clearfix">
+						<ul class="clearfix pull-left soc">
+							<li class="likes">
+                                <a ng-if="!project.remaindayshours[0].alreadyLiked" href="" class="li" ng-click="addLike(project)" alt="Like" title="Like">
+                                    <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                                </a>
+                                <a ng-if="project.remaindayshours[0].alreadyLiked" href="" class="li liked" alt="Liked" title="Liked">
+                                    <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                                </a>
+                            </li>
+							<li>
+								<a href="" class="tw" alt="Share on Facebook" title="Share on Facebook"
+								socialshare
+								socialshare-provider="facebook"
+								socialshare-text="{{project.title}}"
+								socialshare-title="{{project.title}}"
+								socialshare-type="send"
+								socialshare-hashtags="{{project.title}}"
+								socialshare-url="http://supportmytalent.in/#/project/{{project.projectId}}">
+								<i class="fa fa-facebook" aria-hidden="true"></i>
+								</a>
+							</li>
+							<li>
+								<a href="" class="tw" alt="Share on Twitter" title="Share on Twitter"
+								socialshare
+								socialshare-provider="twitter"
+								socialshare-text="{{project.title}}"
+								socialshare-hashtags="{{project.title}}"
+								socialshare-url="http://supportmytalent.in/#/project/{{project.projectId}}">
+								<i class="fa fa-twitter" aria-hidden="true"></i>
+								</a>
+							</li>
+							<li>
+								<a href="" class="go" alt="Share on Google" title="Share on Google"
+								socialshare
+								socialshare-provider="google"
+								socialshare-text="{{project.title}}"
+								socialshare-hashtags="{{project.title}}"
+								socialshare-url="http://supportmytalent.in/#/project/{{project.projectId}}">
+								<i class="fa fa-google-plus" aria-hidden="true"></i>
+								</a>
+							</li>
+							<li>
+								<a href="" class="go" alt="Share on LinkedIn" title="Share on LinkedIn"
+								socialshare
+								socialshare-provider="linkedin"
+								socialshare-text="{{project.title}}"
+								socialshare-description="{{project.title}}"
+								socialshare-hashtags="{{project.title}}"
+								socialshare-url="http://supportmytalent.in/#/project/{{project.projectId}}">
+								<i class="fa fa-linkedin" aria-hidden="true"></i>
+								</a>
+							</li>
+						</ul>
+						<ul class="clearfix pull-right views">
+							<li><span class="cnt">{{project.remaindayshours[0].likesCount}}</span>
+								{{project.remaindayshours[0].likesCount==1?'Like':'Likes'}}</li>
+							<li><span class="cnt">{{project.remaindayshours[0].viewsCount}}</span> Views</li>
+						</ul>
+					</div>
+				</div>
+				<div class="pd-about">
+					<h4 class="btn-title">About this Campaign</h4>
+					<p class="pd-desc">{{project.description}}</p>
+					
+					<h4 class="btn-title">How I will spend money</h4>
+					<div class="row">
+						<div class="col-md-6">
+							<div id="spendmoneyGraph"></div>
+						</div>
+						<div class="col-md-6 col-spendmoney">
+							<div class="spendmoney" ng-repeat="spendmoney in project.spendmoney track by $index">
+								<p class="pd-desc">
+									<i class="fa fa-circle" aria-hidden="true" style="color:{{pieColors[$index]}}"></i>{{spendmoney.amount}}.00 - {{spendmoney.description}}
+								</p>
+							</div>
+						</div>
+					</div>
+					
+					<h4 class="btn-title" ng-if="project.team.length">My Team</h4>
+					<div class="row team">
+						<div class="col-md-6" ng-repeat="team in project.team track by $index">
+							<div class="team-wrp clearfix">
+								<div style="background-image:url(uploads/{{team.picture}})" class="team-bg"></div>
+								<div class="name pull-left">
+									<h5>{{team.name}}</h5>
+									<p>{{team.designation}}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<h4 class="btn-title">Comments ({{comments.length}})</h4>
+					<div class="comments">
+						<div class="cmt-wrp">
+							<div class="c-wrp clearfix" ng-repeat="c in comments track by $index">
+								<img ng-if="c.users.loginType=='CUSTOM' && c.users.profilePicture" ng-src="uploads/{{c.users.profilePicture}}" class="cmt-bg">
+								<div ng-if="c.users.loginType=='CUSTOM' && !c.users.profilePicture" class="cmt-bg user-bg-div">{{c.users.name.substring(0,1)}}</div>
+								<img ng-if="c.users.loginType!='CUSTOM'" ng-src="{{c.users.profilePicture}}" class="cmt-bg">
+								<div class="name">
+									<h5>{{c.users.name}}<span class="day">{{c.comments.commentedOn|toDayMonth}}</span></h5>
+									<p>{{c.comments.comment}}</p>
+								</div>
+								<!--<div class="abuse-cmt-wrp" ng-if="loggedUserId">
+									<a href="" data-toggle="dropdown" class="dropdown-toggle dots">
+										<i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+									</a>
+									<ul class="dropdown-menu">
+										<li><a href="" ng-click="showAbuseModel(c.comments);">REPORT SPAM OR ABUSE</a></li>
+									</ul>
+								</div>-->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="support-box support">
+					<div class="row">
+						<div class="col-md-6 money-stat">
+							<h3 class="amount">
+								<i class="fa fa-rupee" aria-hidden="true"></i>{{project.payments[0].amount|toLocale}}<sup class="needed">.00</sup>
+							</h3>
+							<h4 class="s-title">Money Raised</h4>
+						</div>
+						<div class="col-md-6">
+							<div class="funded-wrp">
+								<div class="f-progress">
+									<div class="p-process"></div>
+									<div class="p-completed" style="width:{{project.achivedPercent | toAchivedPercent :project.payments[0].amount:project.moneyNeeded}}%;"></div>
+								</div>
+								
+								<p class="desc">
+									{{project.achivedPercent | toAchivedPercent :project.payments[0].amount:project.moneyNeeded}}% 
+									amount achieved of <br>
+									<i class="fa fa-rupee" aria-hidden="true"></i> {{project.moneyNeeded|toLocale}}
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6 money-stat">
+							<h3 class="amount">{{project.payments[0].count|toLocale}}</h3>
+							<h4 class="s-title">People Supporting</h4>
+						</div>
+						<div class="col-md-6">
+							<div class="people-wrp">
+								<i class="fa fa-user" aria-hidden="true" ng-repeat="i in project.payments[0].count|numberToArray track by $index"></i>
+								<i class="fa fa-plus people-plus" aria-hidden="true" ng-if="(project.payments[0].count|numberToArray).length>25"></i>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6 money-stat">
+							<h3 class="amount days">{{project.remaindayshours[0].remainHours|getDays}} Days {{project.remaindayshours[0].remainHours|getHours}} Hrs </h3>
+							<h4 class="s-title">Time Remaining</h4>
+						</div>
+						<div class="col-md-6">
+							<div class="days-wrp">
+								<!--<div class="total-days"></div>-->
+								<div class="completed-days"></div>
+							</div>
+						</div>
+
+					</div>
+					<div class="support-me">
+						<p class="desc">{{project.about}}</p>
+					</div>
+				</div>
+				<div class="support-box user">
+					<a href="#dashboard/{{project.userId}}" class="poster-title">
+						<div ng-if="project.userPhoto.substr(0,4)!='http'" style="background-image:url(uploads/{{project.userPhoto}})" class="support-user-bg"></div>
+						<div ng-if="project.userPhoto.substr(0,4)=='http'" style="background-image:url({{project.userPhoto}})" class="support-user-bg"></div>
+					</a>
+					<div class="user-info">
+						<a href="#dashboard/{{project.userId}}" class="poster-title">
+							<h3 class="s-user">{{project.name}}</h3>
+						</a>
+						<p class="s-loc"><i class="fa fa-map-marker" aria-hidden="true"></i>{{project.location}}</p>
+						<p class="s-email"><i class="fa fa-envelope" aria-hidden="true"></i>
+							<a href="mailto:{{project.email}}?Subject={{project.title}}">{{project.email}}</a>
+						</p>
+						<a href="https://www.facebook.com/app_scoped_user_id/{{project.facebook}}" target="_blank" class="fb social-link" alt="Facebook" title="Facebook" ng-if="project.facebook">
+							<i class="fa fa-facebook" aria-hidden="true"></i>
+						</a>
+						<a href="" target="_blank" class="fb social-link" alt="Twitter" title="Twitter" ng-if="project.twitter">
+							<i class="fa fa-twitter" aria-hidden="true"></i>
+						</a>
+						<a href="https://plus.google.com/u/0/{{project.googleplus}}" target="_blank" class="fb social-link" alt="Google Plus" title="Google Plus" ng-if="project.googleplus">
+							<i class="fa fa-google-plus" aria-hidden="true"></i>
+						</a>
+					</div>
+				</div>
+				
+				<h4 class="d-title">Money Raised</h4>
+				<div class="support-box user">
+					<div class="scrollbar-inner supporters-scroll">
+						<div class="clearfix ds-wrp" ng-repeat="m in moneyRaised track by $index">
+							<div class="col-xs-4 col-sm-4 col-md-4 ds-img td-txtt">
+								{{td.firstName|getFirstLetter:td.firstName:'V'}}
+							</div>
+							<div class="col-xs-8 col-sm-8 col-md-8 col-md-8 ds-user">
+								<div class="ds-amount"><i class="fa fa-rupee" aria-hidden="true"></i>{{m.amount}}</div>
+								<div class="ds-name">{{m.firstName}}</div>
+								<div class="ds-time">{{m.transDate}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<h4 class="d-title">Payments</h4>
+				<div class="support-box user">
+					<div class="scrollbar-inner supporters-scroll">
+						<div class="clearfix ds-wrp" ng-repeat="p in payments track by $index">
+							<div class="col-xs-2 col-sm-2 col-md-1">
+								<i class="fa fa-calendar a-marker" aria-hidden="true"></i>
+							</div>
+							<div class="col-xs-8 col-sm-8 col-md-8 col-md-8 ds-user">
+								<div class="ds-name">{{p.DateRange}}</div>
+								<div class="ds-time">₹. {{p.total}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				
+				<h4 class="d-title">{{likes.count.total}} Likes</h4>
+				<div class="support-box user">
+					<div class="scrollbar-inner supporters-scroll">
+						<div class="clearfix ds-wrp" ng-repeat="l in likes.weekly track by $index">
+							<div class="col-xs-2 col-sm-2 col-md-1">
+								<i class="fa fa-calendar a-marker" aria-hidden="true"></i>
+							</div>
+							<div class="col-xs-8 col-sm-8 col-md-8 col-md-8 ds-user">
+								<div class="ds-name">{{l.DateRange}}</div>
+								<div class="ds-time">{{l.count}} Likes</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				
+				<h4 class="d-title">{{views.count.total}} Views</h4>
+				<div class="support-box user">
+					<div class="scrollbar-inner supporters-scroll">
+						<div class="clearfix ds-wrp" ng-repeat="v in views.weekly track by $index">
+							<div class="col-xs-2 col-sm-2 col-md-1">
+								<i class="fa fa-calendar a-marker" aria-hidden="true"></i>
+							</div>
+							<div class="col-xs-8 col-sm-8 col-md-8 col-md-8 ds-user">
+								<div class="ds-name">{{v.DateRange}}</div>
+								<div class="ds-time">{{v.count}} Views</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				
+			</div>
+		</div>
+	</div>
+</section>
+<section class="proj-report pd" style="padding:0 30px;">
+	<h4 class="btn-title">Accouting Section</h4>
+	<div class="row p-section">
+		<div class="col-md-6">
+			<h3 class="title">Total funds received till now</h3>
+			<h3 class="value">₹. {{accounting.totalFunds}}</h3>
+		</div>
+		<div class="col-md-6">
+			<h3 class="title">User Share</h3>
+			<h3 class="value">₹. {{accounting.userShare}}</h3>
+		</div>
+	</div>
+	<div class="row p-section">
+		<div class="col-md-6">
+			<h3 class="title">Company Share</h3>
+			<h3 class="value">₹. {{accounting.companyShare}} <span>(7% including)</span></h3>
+		</div>
+		<div class="col-md-6">
+			<h3 class="title">Actual Company share after processing charges</h3>
+			<h3 class="value">₹. {{accounting.acutualCompanyShare}}</h3>
+		</div>
+	</div>
+	<div class="row p-section">
+		<div class="col-md-6">
+			<h3 class="title">Additional purchase</h3>
+			<h3 class="value">₹. {{accounting.homePromotionPurchase}} <span>(Featured Section)</span></h3>
+		</div>
+		<div class="col-md-6">
+			<h3 class="title">Additional purchase</h3>
+			<h3 class="value">₹. {{accounting.socialPromotionPurchase}} <span>(Social Media Section)</span></h3>
+		</div>
+	</div>
+	<div class="row p-section">
+		<div class="col-md-6">
+			<h3 class="title">Total Company Earning</h3>
+			<h3 class="value">₹. {{accounting.totalCompanyEarning}} <span>(Actual Company Share Amount + Purchase Amount)</span></h3>
+		</div>
+		<div class="col-md-6">
+			<h3 class="title">Applicable taxes for users</h3>
+			<h3 class="value">₹. {{accounting.taxesForUser}}</h3>
+		</div>
+	</div>
+	<div class="row p-section">
+		<div class="col-md-6">
+			<h3 class="title">Balance funds after all deductions</h3>
+			<h3 class="value">₹. {{accounting.balanceFund}} <span>(Total fund received - Compnay share - Processing charges - Taxes)</span></h3>
+		</div>
+		<div class="col-md-6">
+			<h3 class="title">Fund dispresed till now</h3>
+			<h3 class="value">₹. {{accounting.fundDispersed}}</h3>
+		</div>
+	</div>
+	<div class="row p-section">
+		<div class="col-md-6">
+			<h3 class="title">Remaining balance with the compnay</h3>
+			<h3 class="value">Rs. {{accounting.balanceWithTheCompany}}</h3>
+		</div>
+	</div>
+</section>
+
+<!--Discontinue project popup-->
+<div class="modal fade loginModal abuseModel" id="AbuseModel" role="dialog" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <button type="button" class="close" data-dismiss="modal">&times;</button>
+		  <h4 class="modal-title">Report reply</h4>
+		</div>
+		<div class="modal-body">
+			<div class="abuse-input-wrp">
+				<md-radio-group ng-model="abuse.option">
+					<md-radio-button md-no-ink class="md-primary" value="SPAMCONTENT">Unwanted commercial content or spam</md-radio-button>
+					<md-radio-button md-no-ink class="md-primary" value="SEXMATEIAL">Pornography or sexually explicit material</md-radio-button>
+					<md-radio-button md-no-ink class="md-primary" value="VOILENCE">Hate speech or graphic violence</md-radio-button>
+					<md-radio-button md-no-ink class="md-primary" value="HARASSMENT">Harassment or bullying</md-radio-button>
+				</md-radio-group>
+			</div>
+			<div class="btn-wrp">
+				<button type="button" class="btn btn-default btn-secondary" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-default btn-primary" ng-click="submitAbuse(abuse.option)">Submit</button>
+			</div>
+		</div>
+	  </div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	jQuery(document).ready(function(){
+		 jQuery('.scrollbar-inner').scrollbar();
+	});
+</script>
+

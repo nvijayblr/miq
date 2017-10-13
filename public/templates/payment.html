@@ -1,0 +1,28 @@
+<section class="payment-container">
+	<div class="container">
+		<div class="payment-wrp">
+			<h4 class="title" ng-if="payments.txnStatus=='TXN_SUCCESS'">Your payment is successful!!</h4>
+			<h4 class="title" ng-if="payments.txnStatus!='TXN_SUCCESS'">Your payment is failure!!</h4>
+			<div class="wrp">
+				<label>Order Id:</label>
+				<div>{{payments.orderId}}</div>
+			</div>
+			<div class="wrp">
+				<label>Payment Through:</label>
+				<div>{{payments.payThrough}}</div>
+			</div>
+			<div class="wrp">
+				<label>Amount:</label>
+				<div>{{payments.amount}}</div>
+			</div>
+			<div class="wrp">
+				<label>Transation Date:</label>
+				<div>{{payments.txnDate}}</div>
+			</div>
+			<div>
+				<a href="#project/{{payments.projectId}}" class="btn btn-default btn-secondary">View Campaign</a>
+			</div>
+		</div>
+	</div>
+</section>
+

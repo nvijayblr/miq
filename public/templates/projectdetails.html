@@ -1,0 +1,182 @@
+<form name="projectdetailsForm" ng-submit="startRewards(projectdetailsForm.$valid);" novalidate autocomplete="off">
+<section class="content">
+	<div class="create-proj-cont">
+		<div class="create-proj-wrp steps-wrp">
+			<div ng-include="'templates/partials/steps.html'"></div>
+			<div class="steps-content">
+				<div class="row steps-content-basic">
+					<div class="proj-steps-wrp">
+						<h5 class="f-label">Upload Videos &amp; Pictures</h5>
+						<!--<div class="upload-progress" style="width:{{uploadCompleted}}%"></div>-->
+						<div class="clearfix proj-assets">
+							<div class="image-toast">
+								<img src="../assets/icons/checked.png" class="toast-tick"/>Campaign Images/Videos updated successfully !!
+							</div>
+							<div class="col-md-3 asset-box" ng-repeat="g in tempAssets">
+								<div ng-if="!g.location">
+									<!--<div class="upload-progress" style="width:{{g.uploadCompleted}}%"></div>-->
+									<div class="drag-drop-box drop-box" 
+										 ngf-select = "uploadImagesVideos(g)" 
+										 ngf-drop = "uploadImagesVideos(g)"
+										 ng-model="g.projectImages" 
+										 name="g.projectImages" 
+										 ngf-pattern="'image/*,video/*'"
+										 accept="'image/*,video/*'"
+										 ngf-resize="true"
+										 ngf-max-size="15MB"
+										 ngf-max-files="8"
+										 ngf-multiple="true"
+										 ng-disabled='disableDragDrop'>
+
+									<div class="upload-img">
+										<!--<div class="upload-img"><span class="glyphicon glyphicon-cloud-upload"></span></div>-->
+										<h4>DRAG &amp; DROP</h4>
+										<p>OR</p>
+										<h5>Browse</h5>
+										<p>Supported files: JPEG, PNG, GIF, MOV4, AVI, MOV, MPEG <br>Size upto 30MB</p>
+									</div>
+								</div>
+							</div>
+							<div ng-if="g.location">
+								<div class="drag-drop-box preview" ng-class="g.selected?'selected':''">
+									<div ng-if="g.type!='Video'" class="preview-img" style="background-image:url(/uploads/{{g.location}})"></div>
+									<div ng-if="g.type=='Video'" class="preview-img" style="background-image:url({{g.location}})"></div>
+									<div class="preview-action clearfix" ng-class="g.selected?'selected':''">
+										<div class="preview-selection" ng-click="selectPreview(g)"></div>
+										<div class="preview-delete" ng-click="deleteSelectedAssets([g.assetId])"><i class="fa fa-trash-o" aria-hidden="true"></i></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3 steps-form" ng-if="tempAssets.length<8">
+							<div class="reward-box-add team-box-add assets-add">
+								<a href="" class="add-box" ng-click="addProjectAssets(tempAssets)">+</a>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<p style="text-align:right;">
+								<a href="" class="delete-rewards" ng-if="selectedItems.length>0" ng-click="deleteSelectedAssets(selectedItems)">
+								<i class="fa fa-trash-o" aria-hidden="true"></i>Delete selected</a>
+							</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="steps-form col-md-12">
+							<div class="input-wrp">
+								<label class="f-label">How Much Money I Need</label>
+								<md-input-container class="rupees" style="width:74%">
+									<label class="ph-label">Money needed</label>
+									<i class="fa fa-rupee"></i>
+									<input type="text" ng-model="project.moneyNeeded" ng-pattern="/^[0-9,]*$/" required>
+									<div class="error-lable required">How much money I need text field empty.</div>
+									<div class="error-lable format">Entering the invalid format.</div>
+									<span class="md-raised md-primary question-info" aria-label="Play">
+										<md-tooltip md-direction="left">
+											<p>Enter actual or approximate money you need to complete your goal or project.</p>
+										</md-tooltip>
+									  <i class="fa fa-question-circle" aria-hidden="true"></i>
+									</span>
+									<span class="tick-green"></span>
+								</md-input-container>
+							</div>
+							<div class="row clearfix">
+								<div class="title-wrp">
+									<label class="f-label" style="margin-left: 18px;">How I'm Going to Spend the Money (Optional)</label>
+									<span class="md-raised md-primary question-info" aria-label="Play">
+										<md-tooltip md-direction="left">
+											<p>Breakup of your total money like how much you are going to spend on equipments, fees, travel etc.</p>
+										</md-tooltip>
+									  <i class="fa fa-question-circle" aria-hidden="true"></i>
+									</span>
+									<span class="tick-green"></span>
+								</div>
+								<div class="clearfix spend" ng-repeat="spend in project.spendmoney track by $index">
+									<div class="col-md-3">
+										<div class="input-amt-wrp">
+											<md-input-container class="rupees" ng-class="spend.showAmtError?'md-input-invalid ':''">
+												<label class="ph-label">5000</label>
+												<i class="fa fa-rupee"></i>
+												<input type="text" ng-model="spend.amount" ng-pattern="/^[0-9,]*$/" id="spendamount_{{$index}}">
+												<div class="error-lable required">Amount is required!</div>
+												<div class="error-lable format">Entering the invalid format.</div>
+											</md-input-container>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="input-amt-wrp">
+											<md-input-container ng-class="spend.showDescError?'md-input-invalid':''">
+												<label class="ph-label">Description</label>
+												<input type="text" ng-model="spend.description" id="spenddesc_{{$index}}">
+												<div class="error-lable required">Description is required!</div>
+											</md-input-container>
+										</div>
+
+									</div>
+									<div class="col-md-3">
+										<a href="" class="delete-rewards" ng-if="project.spendmoney.length>1" ng-click="deleteSpendMoney(project.spendmoney, $index)"><i class="fa fa-trash-o" aria-hidden="true"></i>Delete</a>
+									</div>
+								</div>
+							</div>
+							<div class="row" ng-if="project.spendmoney.length<5">
+								<div class="col-md-12 text-right"><a href="" class="add-more" ng-click="addSpendMoney(project.spendmoney, project.moneyNeeded)">+ Add More</a></div>
+							</div>
+
+							<div class="input-wrp">
+								<label class="f-label" style="margin-bottom:20px;">Funding Duration</label>
+								<md-radio-group ng-model="project.daysDate">
+									<div style="margin-bottom:20px;">
+										<md-radio-button value="Days" class="md-primary duration-lt">No. of Days</md-radio-button>
+										<md-input-container class="duration-rt">
+											<label class="ph-label">30</label>
+											<input type="text" ng-model="project.noOfDays" ng-disabled="project.daysDate=='Date'" ng-change="changeDays(project.noOfDays)" ng-minlength="1" ng-maxlength="3" ng-pattern="/^[0-9]*$/" ng-required="project.daysDate=='Days'">
+											<div class="error-lable required">No.of days text field empty.</div>
+											<div class="error-lable format">Entering the invalid format.</div>
+                                            <span class="md-raised md-primary question-info" aria-label="Play">
+                                                <md-tooltip md-direction="left">
+                                                    <p>Enter the days from today for how long you want to run this funding campaign, ideal time to run is 45 days.</p>
+                                                </md-tooltip>
+                                              <i class="fa fa-question-circle" aria-hidden="true"></i>
+                                            </span>
+                                            <span class="tick-green"></span>
+										</md-input-container>
+									</div>
+									<div>
+										<md-radio-button value="Date" class="md-primary duration-lt">End by Date</md-radio-button>
+										<div class="date-rt">
+											<md-datepicker name="endByDate" ng-model="project.endByDate" md-min-date="projectMinDate" md-max-date="projectMaxDate" md-placeholder="" ng-disabled="project.daysDate=='Days'" ng-change="changeDate(project.endByDate)" required></md-datepicker>
+											<div class="validation-messages" ng-messages="projectdetailsForm.endByDate.$error">
+												<div ng-message="required" class="date-error-lable">Date field is empty.</div>
+												<div ng-message="mindate" class="date-error-lable">Past date selection.</div>
+												<div ng-message="maxdate" class="date-error-lable">Entering the invalid format.</div>
+												<div ng-message="valid" class="date-error-lable">Entering the invalid format.</div>
+											</div>
+										</div>
+									</div>
+								</md-radio-group>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			</div>
+			<div class="steps-footer">
+				<div class="row">
+					<div class="col-md-6 col-sm-6 col-xs-6 prev">
+						<a ng-href="{{edit?'#edit/basicinfo/':'#create/basicinfo/'}}{{projectId}}" class="steps-back">
+							<p class="cont">Back to</p>
+							<img src="assets/icons/left-arrow.svg" class="arrow-left"><span>Basic Info</span>
+						</a>
+					</div>
+					<div class="col-md-6 col-sm-6 col-xs-6 next">
+						<button class="btn btn-default btn-subscribe btn-login steps-back" ng-click="projectdetailsForm.submit()" ng-disabled='disableDragDrop'>
+							<p class="cont">Continue to</p>
+							<p><span>Rewards &amp; Services</span><img src="assets/icons/right-arrow.svg" class="arrow-right"></p>
+						</button>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+	

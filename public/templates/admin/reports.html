@@ -1,0 +1,443 @@
+<div style="padding: 0 40px;">
+	<section class="duration-tabs">
+		<div class="row">
+			<div class="col-md-4 d-tab">
+				<a href="" ng-class="tab=='weekly'?'active':''" ng-click="changePeriod('weekly')">Weekly</a>
+			</div>
+			<div class="col-md-4 d-tab">
+				<a href="" ng-class="tab=='monthly'?'active':''" ng-click="changePeriod('monthly')">Monthly</a>
+			</div>
+			<div class="col-md-4 d-tab">
+				<a href="" ng-class="tab=='range'?'active':''" ng-click="changePeriod('range')">Date Range</a>
+			</div>
+		</div>
+	</section>
+	<section class="filter create">
+		<div class="row admin report filter-wrp" ng-show="tab=='weekly'">
+			<div class="col-sm-12 col-md-3">
+				<h3 class="sel-dt-range">Select Week</h3>
+			</div>
+			<div class="col-sm-12 col-md-9">
+				<div class="clearfix">
+					<div class="pull-left">
+						<input type='text' id='weeklyDatePicker' placeholder="Select Week" />
+					</div>
+					<div class="pull-left">
+						<button type="button" class="btn btn-xs btn-primary export" ng-click="initAll();">Apply</button>
+					</div>
+					<div class="pull-left">
+						<button type="button" class="btn btn-xs btn-secondary export">Download</button>
+					</div>
+				</div>			
+			</div>
+		</div>
+		<div class="row admin report filter-wrp" ng-show="tab=='monthly'">
+			<div class="col-sm-12 col-md-3">
+				<h3 class="sel-dt-range">Select Month</h3>
+			</div>
+			<div class="col-sm-12 col-md-9">
+			<div class="col-sm-12 col-md-9">
+				<div class="clearfix">
+					<div class="pull-left">
+						<input type='text' id='monthDatePicker' placeholder="Select Month" />
+					</div>
+					<div class="pull-left">
+						<button type="button" class="btn btn-xs btn-primary export" ng-click="initAll();">Apply</button>
+					</div>
+					<div class="pull-left">
+						<button type="button" class="btn btn-xs btn-secondary export">Download</button>
+					</div>
+				</div>			
+			</div>
+			</div>
+		</div>
+		<div class="row admin report filter-wrp" ng-show="tab=='range'">
+			<div class="col-sm-12 col-md-3">
+				<h3 class="sel-dt-range">Select Date Range</h3>
+			</div>
+			<div class="col-sm-12 col-md-9">
+				<div class="clearfix">
+					<div class="pull-left">
+						<label class="d-label">From</label>
+						<md-datepicker name="endByDate" ng-model="filter.fromDate" md-placeholder="" required></md-datepicker>
+					</div>
+					<div class="pull-left">
+						<label class="d-label">To</label>
+						<md-datepicker name="endByDate" ng-model="filter.toDate" md-placeholder="" required></md-datepicker>
+					</div>
+					<div class="pull-left">
+						<button type="button" class="btn btn-xs btn-primary export" ng-click="initAll();">Apply</button>
+					</div>
+					<div class="pull-left">
+						<button type="button" class="btn btn-xs btn-secondary export">Download</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="proj-report">
+		<div class="row p-section">
+			<div class="col-md-6">
+				<h3 class="title">Total Project Posted</h3>
+				<h3 class="value">{{projectsStat.totalProjects}}</h3>
+			</div>
+			<div class="col-md-6">
+				<h3 class="title">Total Earnings</h3>
+				<h3 class="value">₹.{{projectsStat.totalFunded}}</h3>
+			</div>
+		</div>
+		<div class="row p-section">
+			<div class="col-md-6">
+				<h3 class="title">Top City <span>(Projects Posted)</span></h3>
+				<h3 class="value">{{projectsStat.projectsTopLocation}}</h3>
+			</div>
+			<div class="col-md-6">
+				<h3 class="title">Top City <span>(Earnings)</span></h3>
+				<h3 class="value">{{projectsStat.fundedTopLocation}}</h3>
+			</div>
+		</div>
+		<div class="row p-section">
+			<div class="col-md-6">
+				<h3 class="title">Top 10 Projects <span>(Likes and Comments)</span></h3>
+				<div class="scroll-wrp">
+					<div class="scrollbar-inner supporters-scroll">
+						<div class="clearfix ds-wrp" ng-repeat="tp in topProjects | limitTo:10 track by $index ">
+							<div class="col-xs-4 col-sm-4 col-md-4 ds-img" style="background-image:url(uploads/{{tp.coverImage}});"></div>
+							<div class="col-xs-8 col-sm-8 col-md-8 col-md-8 ds-user">
+								<div class="ds-amount">{{tp.title}}</div>
+								<div class="ds-time">{{tp.likesCount}} Likes {{tp.commentsCount}} Comments</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="center" style="margin-top: 15px;">
+					<button type="button" class="btn btn-xs btn-primary export" ng-click="showAllTopProjects();">Show All</button>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<h3 class="title">Top 10 Funded Projects</h3>
+				<div class="scroll-wrp">
+					<div class="scrollbar-inner supporters-scroll">
+						<div class="clearfix ds-wrp" ng-repeat="tp in topFunded | limitTo:10 track by $index">
+							<div class="col-xs-4 col-sm-4 col-md-4 ds-img" style="background-image:url(uploads/{{tp.coverImage}});"></div>
+							<div class="col-xs-8 col-sm-8 col-md-8 col-md-8 ds-user">
+								<div class="ds-amount">{{tp.title}}</div>
+								<div class="ds-time">₹.{{tp.funded}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="center" style="margin-top: 15px;">
+					<button type="button" class="btn btn-xs btn-primary export" ng-click="showAllTopFunded();">Show All</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="row p-section">
+			<div class="col-md-6">
+				<h3 class="title">Over Funded Projects</h3>
+				<div class="scroll-wrp">
+					<div class="scrollbar-inner supporters-scroll">
+						<div class="clearfix ds-wrp" ng-repeat="of in overFunded | limitTo:10 track by $index">
+							<div class="col-xs-4 col-sm-4 col-md-4 ds-img" style="background-image:url(uploads/{{of.coverImage}});"></div>
+							<div class="col-xs-8 col-sm-8 col-md-8 col-md-8 ds-user">
+								<div class="ds-amount">{{of.title}}</div>
+								<div class="ds-time">₹.{{of.funded}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="center" style="margin-top: 15px;">
+					<button type="button" class="btn btn-xs btn-primary export" ng-click="showAllOverFunded();">Show All</button>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<h3 class="title">Less Funded Projects <span>(Below 50% Funding)</span></h3>
+				<div class="scroll-wrp">
+					<div class="scrollbar-inner supporters-scroll">
+						<div class="clearfix ds-wrp" ng-repeat="lf in lessFunded | limitTo:10 track by $index">
+							<div class="col-xs-4 col-sm-4 col-md-4 ds-img" style="background-image:url(uploads/{{lf.coverImage}});"></div>
+							<div class="col-xs-8 col-sm-8 col-md-8 col-md-8 ds-user">
+								<div class="ds-amount">{{lf.title}}</div>
+								<div class="ds-time">{{lf.percent|toLocale}}%</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="center" style="margin-top: 15px;">
+					<button type="button" class="btn btn-xs btn-primary export" ng-click="showAllLessFunded();">Show All</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="row p-section">
+			<div class="col-md-6">
+				<h3 class="title">Top 10 Donors</h3>
+				<div class="scroll-wrp">
+					<div class="scrollbar-inner supporters-scroll">
+						<div class="clearfix ds-wrp" ng-repeat="td in topDonors | limitTo:10 track by $index">
+							<div class="col-xs-4 col-sm-4 col-md-4 ds-img ds-txt" style="background-image:url(uploads/{{td.coverImage}});">
+								{{td.firstName|getFirstLetter:td.firstName:'V'}}
+							</div>
+							<div class="col-xs-8 col-sm-8 col-md-8 col-md-8 ds-user">
+								<div class="ds-amount">{{td.firstName}}</div>
+								<div class="ds-time">₹.{{td.amount}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="center" style="margin-top: 15px;">
+					<button type="button" class="btn btn-xs btn-primary export" ng-click="showAllTopDonors();">Show All</button>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<h3 class="title">Top 10 Locations</h3>
+				<div class="scroll-wrp">
+					<div class="scrollbar-inner supporters-scroll">
+						<div class="clearfix ds-wrp" ng-repeat="ts in topCities | limitTo:10 track by $index">
+							<div class="col-xs-2 col-sm-2 col-md-1">
+								<i class="fa fa-map-marker" aria-hidden="true"></i>
+							</div>
+							<div class="col-xs-8 col-sm-8 col-md-8 col-md-8 ds-user">
+								<div class="ds-amount">{{ts.location}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="center" style="margin-top: 15px;">
+					<button type="button" class="btn btn-xs btn-primary export" ng-click="showAllTopCities();">Show All</button>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="proj-report pd">
+		<h4 class="btn-title">Accouting Section</h4>
+		<div class="row p-section">
+			<div class="col-md-6">
+				<h3 class="title">Total funds received till now</h3>
+				<h3 class="value">₹. {{accounting.totalFunds}}</h3>
+			</div>
+			<div class="col-md-6">
+				<h3 class="title">User Share</h3>
+				<h3 class="value">₹. {{accounting.userShare}}</h3>
+			</div>
+		</div>
+		<div class="row p-section">
+			<div class="col-md-6">
+				<h3 class="title">Company Share</h3>
+				<h3 class="value">₹. {{accounting.companyShare}} <span>(7% including)</span></h3>
+			</div>
+			<div class="col-md-6">
+				<h3 class="title">Actual Company share after processing charges</h3>
+				<h3 class="value">₹. {{accounting.acutualCompanyShare}}</h3>
+			</div>
+		</div>
+		<div class="row p-section">
+			<div class="col-md-6">
+				<h3 class="title">Additional purchase</h3>
+				<h3 class="value">₹. {{accounting.homePromotionPurchase}} <span>(Featured Section)</span></h3>
+			</div>
+			<div class="col-md-6">
+				<h3 class="title">Additional purchase</h3>
+				<h3 class="value">₹. {{accounting.socialPromotionPurchase}} <span>(Social Media Section)</span></h3>
+			</div>
+		</div>
+		<div class="row p-section">
+			<div class="col-md-6">
+				<h3 class="title">Total Company Earning</h3>
+				<h3 class="value">₹. {{accounting.totalCompanyEarning}} <span>(Actual Company Share Amount + Purchase Amount)</span></h3>
+			</div>
+			<div class="col-md-6">
+				<h3 class="title">Applicable taxes for users</h3>
+				<h3 class="value">₹. {{accounting.taxesForUser}}</h3>
+			</div>
+		</div>
+		<div class="row p-section">
+			<div class="col-md-6">
+				<h3 class="title">Balance funds after all deductions</h3>
+				<h3 class="value">₹. {{accounting.balanceFund}} <span>(Total fund received - Compnay share - Processing charges - Taxes)</span></h3>
+			</div>
+			<div class="col-md-6">
+				<h3 class="title">Fund dispresed till now</h3>
+				<h3 class="value">₹. {{accounting.fundDispersed}}</h3>
+			</div>
+		</div>
+		<div class="row p-section">
+			<div class="col-md-6">
+				<h3 class="title">Remaining balance with the compnay</h3>
+				<h3 class="value">Rs. {{accounting.balanceWithTheCompany}}</h3>
+			</div>
+		</div>
+	</section>
+</div>
+
+<!--reports popup-->
+<div class="modal fade extendProject" id="topProjects" role="dialog" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <button type="button" class="close" data-dismiss="modal">&times;</button>
+		  <h4 class="modal-title">Top 10 Projects <span>(Likes and Comments)</span></h4>
+		</div>
+		<div class="modal-body reports proj-report">
+			<div class="login-wrp">
+				<div class="scroll-wrp">
+					<div class="scrollbar-inner supporters-scroll">
+						<div class="clearfix ds-wrp" ng-repeat="tp in topProjects track by $index">
+							<div class="col-xs-4 col-sm-4 col-md-4 ds-img" style="background-image:url(uploads/{{tp.coverImage}});"></div>
+							<div class="col-xs-8 col-sm-8 col-md-8 col-md-8 ds-user">
+								<div class="ds-amount">{{tp.title}}</div>
+								<div class="ds-time">{{tp.likesCount}} Likes {{tp.commentsCount}} Comments</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	  </div>
+	</div>
+</div>
+
+<div class="modal fade extendProject" id="topFunded" role="dialog" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <button type="button" class="close" data-dismiss="modal">&times;</button>
+		  <h4 class="modal-title">Top 10 Funded Projects</h4>
+		</div>
+		<div class="modal-body reports proj-report">
+			<div class="login-wrp">
+				<div class="scroll-wrp">
+					<div class="scrollbar-inner supporters-scroll">
+						<div class="clearfix ds-wrp" ng-repeat="tp in topFunded track by $index">
+							<div class="col-xs-4 col-sm-4 col-md-4 ds-img" style="background-image:url(uploads/{{tp.coverImage}});"></div>
+							<div class="col-xs-8 col-sm-8 col-md-8 col-md-8 ds-user">
+								<div class="ds-amount">{{tp.title}}</div>
+								<div class="ds-time">₹.{{tp.funded}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	  </div>
+	</div>
+</div>
+
+<div class="modal fade extendProject" id="overFunded" role="dialog" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <button type="button" class="close" data-dismiss="modal">&times;</button>
+		  <h4 class="modal-title">Over Funded Projects</h4>
+		</div>
+		<div class="modal-body reports proj-report">
+			<div class="login-wrp">
+				<div class="scroll-wrp">
+					<div class="scrollbar-inner supporters-scroll">
+						<div class="clearfix ds-wrp" ng-repeat="of in overFunded track by $index">
+							<div class="col-xs-4 col-sm-4 col-md-4 ds-img" style="background-image:url(uploads/{{of.coverImage}});"></div>
+							<div class="col-xs-8 col-sm-8 col-md-8 col-md-8 ds-user">
+								<div class="ds-amount">{{of.title}}</div>
+								<div class="ds-time">₹.{{of.funded}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	  </div>
+	</div>
+</div>
+
+
+<div class="modal fade extendProject" id="lessFunded" role="dialog" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <button type="button" class="close" data-dismiss="modal">&times;</button>
+		  <h4 class="modal-title">Less Funded Projects <span>(Below 50% Funding)</span></h4>
+		</div>
+		<div class="modal-body reports proj-report">
+			<div class="login-wrp">
+				<div class="scroll-wrp">
+					<div class="scrollbar-inner supporters-scroll">
+						<div class="clearfix ds-wrp" ng-repeat="lf in lessFunded track by $index">
+							<div class="col-xs-4 col-sm-4 col-md-4 ds-img" style="background-image:url(uploads/{{lf.coverImage}});"></div>
+							<div class="col-xs-8 col-sm-8 col-md-8 col-md-8 ds-user">
+								<div class="ds-amount">{{lf.title}}</div>
+								<div class="ds-time">{{lf.percent|toLocale}}%</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	  </div>
+	</div>
+</div>
+
+
+<div class="modal fade extendProject" id="topDonors" role="dialog" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <button type="button" class="close" data-dismiss="modal">&times;</button>
+		  <h4 class="modal-title">Top 10 Donors</h4>
+		</div>
+		<div class="modal-body reports proj-report">
+			<div class="login-wrp">
+				<div class="scroll-wrp">
+					<div class="scrollbar-inner supporters-scroll">
+						<div class="clearfix ds-wrp" ng-repeat="td in topDonors track by $index">
+							<div class="col-xs-4 col-sm-4 col-md-4 ds-img ds-txt" style="background-image:url(uploads/{{td.coverImage}});">
+								{{td.firstName|getFirstLetter:td.firstName:'V'}}
+							</div>							
+							<div class="col-xs-8 col-sm-8 col-md-8 col-md-8 ds-user">
+								<div class="ds-amount">{{td.firstName}}</div>
+								<div class="ds-time">₹.{{td.amount}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	  </div>
+	</div>
+</div>
+
+<div class="modal fade extendProject" id="topCities" role="dialog" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <button type="button" class="close" data-dismiss="modal">&times;</button>
+		  <h4 class="modal-title">Top 10 Locations</h4>
+		</div>
+		<div class="modal-body reports proj-report">
+			<div class="login-wrp">
+				<div class="scroll-wrp">
+					<div class="scrollbar-inner supporters-scroll">
+						<div class="clearfix ds-wrp" ng-repeat="ts in topCities track by $index">
+							<div class="col-xs-2 col-sm-2 col-md-1">
+								<i class="fa fa-map-marker" aria-hidden="true"></i>
+							</div>
+							<div class="col-xs-8 col-sm-8 col-md-8 col-md-8 ds-user">
+								<div class="ds-amount">{{ts.location}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	  </div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+	jQuery(document).ready(function(){
+		 jQuery('.scrollbar-inner').scrollbar();
+	});
+</script>

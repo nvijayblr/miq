@@ -1,0 +1,89 @@
+<section class="filter create">
+	<div class="row admin filter-wrp">
+		<div class="col-sm-6 col-md-5">
+			<div class="input-wrp">
+				<div class="clearfix search-wrp">
+					<input type="text" ng-model="filter.search" class="form-control search-txt" placeholder="Search" />
+					<button type="button" class="btn btn-xs btn-primary search-btn" ng-click="applySearch(filter.search);">Search</button>
+				</div>		
+			</div>
+		</div>
+		<div class="col-sm-6 col-md-7 pull-right">
+			<div class="clearfix">
+				<div class="pull-right">
+					<button type="button" class="btn btn-xs btn-secondary export">Export As XLS</button>
+				</div>
+				<div class="pull-right">
+					<button type="button" class="btn btn-xs btn-primary export">Apply</button>
+				</div>
+				<div class="pull-right">
+					<label class="d-label">To</label>
+					<md-datepicker name="endByDate" ng-model="filter.toDate" md-placeholder="" required></md-datepicker>
+				</div>
+				<div class="pull-right">
+					<label class="d-label">From</label>
+					<md-datepicker name="endByDate" ng-model="filter.fromDate" md-placeholder="" required></md-datepicker>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="clearfix">
+		<p class="pull-left title">Total: {{users.length}}</p>
+		<button type="button" class="btn btn-xs btn-primary pull-right" ng-disabled="!cbSelected" ng-click="deActivateUsers('DEACTIVE', users, true)">Deactivate</button>
+		<button type="button" class="btn btn-xs btn-primary pull-right" ng-disabled="!cbSelected" ng-click="deActivateUsers('ACTIVE', users, true)">Activate</button>
+	</div>
+</section>
+<table class="table table-hover table-responsive table-striped">
+	<tr>
+		<th><input type="checkbox" ng-model="selectAll" ng-click="selectAllCheck(users, selectAll)" /></th>
+		<th  ng-click="sortBy('name')" class="sort-title">
+			Name
+			<i ng-show="sort_propertyName == 'name'" class="glyphicon glyphicon-triangle-{{sort_reverse? 'bottom':'top'}}"></i>
+			<i ng-hide="sort_propertyName == 'name'" class="glyphicon glyphicon-triangle-bottom"></i>
+		</th>
+		<th  ng-click="sortBy('email')" class="sort-title">
+			Email
+			<i ng-show="sort_propertyName == 'email'" class="glyphicon glyphicon-triangle-{{sort_reverse? 'bottom':'top'}}"></i>
+			<i ng-hide="sort_propertyName == 'email'" class="glyphicon glyphicon-triangle-bottom"></i>
+		</th>
+		<th  ng-click="sortBy('city')" class="sort-title">
+			City
+			<i ng-show="sort_propertyName == 'city'" class="glyphicon glyphicon-triangle-{{sort_reverse? 'bottom':'top'}}"></i>
+			<i ng-hide="sort_propertyName == 'city'" class="glyphicon glyphicon-triangle-bottom"></i>
+		</th>
+		<th  ng-click="sortBy('mobileNumber')" class="sort-title">
+			Mobile
+			<i ng-show="sort_propertyName == 'mobileNumber'" class="glyphicon glyphicon-triangle-{{sort_reverse? 'bottom':'top'}}"></i>
+			<i ng-hide="sort_propertyName == 'mobileNumber'" class="glyphicon glyphicon-triangle-bottom"></i>
+		</th>
+		<th  ng-click="sortBy('signupDate')" class="sort-title">
+			Created On
+			<i ng-show="sort_propertyName == 'signupDate'" class="glyphicon glyphicon-triangle-{{sort_reverse? 'bottom':'top'}}"></i>
+			<i ng-hide="sort_propertyName == 'signupDate'" class="glyphicon glyphicon-triangle-bottom"></i>
+		</th>
+		<th  ng-click="sortBy('status')" class="sort-title">
+			Status
+			<i ng-show="sort_propertyName == 'status'" class="glyphicon glyphicon-triangle-{{sort_reverse? 'bottom':'top'}}"></i>
+			<i ng-hide="sort_propertyName == 'status'" class="glyphicon glyphicon-triangle-bottom"></i>
+		</th>
+	</tr>
+	<tr ng-repeat="user in users | orderBy: sort_propertyName:sort_reverse | paginationFilters_startFrom:currentPage*pageSize | limitTo:pageSize track by $index">
+		<td><input type="checkbox" ng-model="user.selected" ng-click="unSelect(users, user.selected)"/></td>
+		<td><a href="#/dashboard/{{user.userId}}" target="_blank" class="link">{{user.name}}</a></td>
+		<td><a href="mailto:{{user.email}}?" class="link">{{user.email}}</a></td>
+		<td>{{user.city}}</td>
+		<td>{{user.mobileNumber}}</td>
+		<td>{{user.signupDate|ddmmyyyy}}</td>
+		<td>
+			<div class="btn-group" role="group" aria-label="Basic example">
+				<button type="button" class="btn btn-xs" ng-class="user.status=='ACTIVE'?'btn-primary':'btn-secondary'" ng-click="deActivateUsers('ACTIVE', user)">Activate</button>
+				<button type="button" class="btn btn-xs" ng-class="user.status!='ACTIVE'?'btn-primary':'btn-secondary'" ng-click="deActivateUsers('DEACTIVE', user)">Deactivate</button>
+				<button type="button" class="btn btn-xs btn-secondary">Edit</button>
+			</div>
+		</td>
+	</tr>
+</table>
+<div class="center" ng-if="users.length">
+	<div class="pagination-wrapper" pagination-directive></div>
+</div>
+<div class="center" ng-if="!users.length">No record found.</div>

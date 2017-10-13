@@ -1,0 +1,37 @@
+<!--Header Section-->
+<section class="header">
+	<div class="containers container-menu">
+		<nav class="navbar navbar-default">
+			<div class="container-fluidd">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-top-nav" aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+			  		</button>
+				</div>
+
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="header-top-nav">
+					<ul class="nav navbar-nav navbar-right top-nav">
+						<!--<li class="singup" ng-if="!loggedIn && !showSearch"><a href="" ng-click="showLogin()"><span class="glyphicon glyphicon-lock"></span>LOGIN/SIGNUP</a></li>-->
+						<li class="login admin">
+							<div class="dropdown username" ng-if="!isAdminLoginPage">
+								<a href="" data-toggle="dropdown" class="dropdown-toggle">ADMIN <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li><a href="#/admin/account">MY ACCOUNT</a></li>
+									<li><a href="" ng-click="logoutAdmin();">LOGOUT</a></li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</div>
+	<div class="logo">
+		<a href="#home"><img src="assets/images/logo.png"></a>
+	</div>
+</section>

@@ -1,0 +1,102 @@
+<section class="filter create">
+	<div class="row admin filter-wrp">
+		<div class="col-sm-6 col-md-5">
+			<div class="input-wrp">
+				<div class="clearfix search-wrp">
+					<input type="text" ng-model="filter.search" class="form-control search-txt" placeholder="Search" />
+					<button type="button" class="btn btn-xs btn-primary search-btn" ng-click="applySearch(filter.search);">Search</button>
+				</div>		
+			</div>
+		</div>
+		<div class="col-sm-6 col-md-7 pull-right">
+			<div class="clearfix">
+				<!--<div class="pull-right">
+					<button type="button" class="btn btn-xs btn-secondary export">Export As XLS</button>
+				</div>
+				<div class="pull-right">
+					<button type="button" class="btn btn-xs btn-primary export">Apply</button>
+				</div>-->
+				<div class="pull-right">
+					{{projectType}}
+					<select style="margin: 5px 0 0;" class="form-control" ng-model="type">
+						<option value="">All</option>
+						<option value="HOME_PROMOTION">Home Page Promotion</option>
+						<option value="SOCIAL_PROMOTION">Social Promotion</option>
+					</select>
+				</div>
+				<!--<div class="pull-right">
+					<label class="d-label">To</label>
+					<md-datepicker name="endByDate" ng-model="filter.toDate" md-placeholder="" required></md-datepicker>
+				</div>
+				<div class="pull-right">
+					<label class="d-label">From</label>
+					<md-datepicker name="endByDate" ng-model="filter.fromDate" md-placeholder="" required></md-datepicker>
+				</div>-->
+			</div>
+		</div>
+	</div>
+	<div class="clearfix">
+		<p class="pull-left title">Total: {{projects.length}}</p>
+		<!--<button type="button" class="btn btn-xs btn-primary pull-right" ng-disabled="!cbSelected" ng-click="deActivateProjects('DEACTIVE', projects, true)">Deactivate</button>
+		<button type="button" class="btn btn-xs btn-primary pull-right" ng-disabled="!cbSelected" ng-click="deActivateProjects('ACTIVE', projects, true)">Activate</button>-->
+	</div>
+</section>
+<table class="table table-hover table-responsive table-striped">
+	<tr>
+		<!--<th><input type="checkbox" ng-model="selectAll" ng-click="selectAllCheck(projects, selectAll)" /></th>-->
+		<th ng-click="sortBy('title')" class="sort-title">
+			Title
+			<i ng-show="sort_propertyName == 'title'" class="glyphicon glyphicon-triangle-{{sort_reverse? 'bottom':'top'}}"></i>
+			<i ng-hide="sort_propertyName == 'title'" class="glyphicon glyphicon-triangle-bottom"></i>
+		</th>
+		<th ng-click="sortBy('category')" class="sort-title">
+			Category
+			<i ng-show="sort_propertyName == 'category'" class="glyphicon glyphicon-triangle-{{sort_reverse? 'bottom':'top'}}"></i>
+			<i ng-hide="sort_propertyName == 'category'" class="glyphicon glyphicon-triangle-bottom"></i>
+		</th>
+		<th ng-click="sortBy('name')" class="sort-title">
+			User
+			<i ng-show="sort_propertyName == 'name'" class="glyphicon glyphicon-triangle-{{sort_reverse? 'bottom':'top'}}"></i>
+			<i ng-hide="sort_propertyName == 'name'" class="glyphicon glyphicon-triangle-bottom"></i>
+		</th>
+		<th ng-click="sortBy('type')" class="sort-title">
+			Type
+			<i ng-show="sort_propertyName == 'type'" class="glyphicon glyphicon-triangle-{{sort_reverse? 'bottom':'top'}}"></i>
+			<i ng-hide="sort_propertyName == 'type'" class="glyphicon glyphicon-triangle-bottom"></i>
+		</th>
+		<th ng-click="sortBy('fromDate')" class="sort-title">
+			Promoted From
+			<i ng-show="sort_propertyName == 'fromDate'" class="glyphicon glyphicon-triangle-{{sort_reverse? 'bottom':'top'}}"></i>
+			<i ng-hide="sort_propertyName == 'fromDate'" class="glyphicon glyphicon-triangle-bottom"></i>
+		</th>
+		<th ng-click="sortBy('toDate')" class="sort-title">
+			Promoted To
+			<i ng-show="sort_propertyName == 'toDate'" class="glyphicon glyphicon-triangle-{{sort_reverse? 'bottom':'top'}}"></i>
+			<i ng-hide="sort_propertyName == 'toDate'" class="glyphicon glyphicon-triangle-bottom"></i>
+		</th>
+		<th ng-click="sortBy('status')" class="sort-title">
+			Status
+			<i ng-show="sort_propertyName == 'status'" class="glyphicon glyphicon-triangle-{{sort_reverse? 'bottom':'top'}}"></i>
+			<i ng-hide="sort_propertyName == 'status'" class="glyphicon glyphicon-triangle-bottom"></i>
+		</th>
+	</tr>
+	<tr ng-repeat="project in projects | filter:type | orderBy: sort_propertyName:sort_reverse | paginationFilters_startFrom:currentPage*pageSize | limitTo:pageSize track by $index">
+		<!--<td><input type="checkbox" ng-model="project.selected" ng-click="unSelect(projects, project.selected)"/></td>-->
+		<td><a href="#/admin/project/{{project.projectId}}" target="_blank" class="link">{{project.title}}</a></td>
+		<td>{{project.category}}</td>
+		<td><a href="#/dashboard/{{project.userId}}" target="_blank" class="link">{{project.name}}</a></td>
+		<td>{{project.type}}</td>
+		<td>{{project.fromDate|ddmmyyyy}}</td>
+		<td>{{project.toDate|ddmmyyyy}}</td>
+		<td>
+			<div class="btn-group" role="group" aria-label="Basic example">
+				<button type="button" class="btn btn-xs" ng-class="project.status=='ACTIVE'?'btn-primary':'btn-secondary'" ng-click="deActivateProjects('ACTIVE', project)">Activate</button>
+				<button type="button" class="btn btn-xs" ng-class="project.status!='ACTIVE'?'btn-primary':'btn-secondary'" ng-click="deActivateProjects('DEACTIVE', project)">Deactivate</button>
+			</div>
+		</td>
+	</tr>
+</table>
+<div class="center" ng-if="projects.length">
+	<div class="pagination-wrapper" pagination-directive></div>
+</div>
+<div class="center" ng-if="!projects.length">No record found.</div>

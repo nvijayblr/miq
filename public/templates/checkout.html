@@ -1,0 +1,147 @@
+<section class="content">
+	<div class="create-proj-cont">
+		<div class="checkout-cont row">
+			<div class="title-wrp">
+				<h6 class="check-sub-title">Hi {{checkout.firstName}}, you're subscribing:</h6>
+			</div>
+			<div class="col-md-12">
+				<div class="checkout-wrp">
+					<div class="clearfix steps-content-basic" ng-if="!courses.length">
+						<h6 class="empty-cart-msg">Your cart is empty.</h6>
+					</div>
+					<div class="clearfix steps-content-basic" ng-if="courses.length">
+						<form name="checkoutForm" ng-submit="makePaytmPayment(checkoutForm.$valid);" novalidate autocomplete="off">
+							<div class="steps-form">
+								<div class="row c-title-wrp">
+									<div class="col-md-6">
+										<label class="f-label">Course/Tests</label>
+									</div>
+									<div class="col-md-3">
+										<label class="f-label">Duration</label>
+									</div>
+									<div class="col-md-3">
+										<label class="f-label">Amount</label>
+									</div>
+								</div>
+								<div class="row c-details" ng-repeat="c in courses track by $index">
+									<div class="col-md-6">
+										<div class="p-img pull-left">
+											<div class="img" ng-if="c.coverPicture" style="background-image:url(/uploads/{{c.coverPicture}})"></div>
+											<div class="img" ng-if="!c.coverPicture" style="background-image:url(assets/images/poster-bg.png)"></div>
+										</div>
+										<label class="f-label c-name">{{c.title}}</label>
+										<a href="" ng-click="removeCart(c);">Delete</a>
+									</div>
+									<div class="col-md-3">
+										<label class="f-label">{{c.duration}} Days</label>
+									</div>
+									<div class="col-md-3">
+										<label class="f-label amt">₹{{c.fees}}</label>
+									</div>
+								</div>
+								
+								<div class="row c-sub-total">
+									<div class="col-md-9 title">
+										<label class="f-label total">Total</label>
+									</div>
+									<div class="col-md-3">
+										<label class="f-label amt">₹{{checkout.TXN_AMOUNT}}</label>
+									</div>
+								</div>
+								<div class="form-wrapper">
+									<div class="row">
+										<div class="col-md-6">
+											<div class="input-wrp">
+												<label class="f-label">First Name</label>
+												<md-input-container>
+													<label class="ph-label">Your First Name</label>
+													<input type="text" ng-model="checkout.firstName" required>
+													<div class="error-lable required">First name text field empty.</div>
+													<div class="error-lable format">Entering the invalid format.</div>
+												</md-input-container>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="input-wrp">
+												<label class="f-label">Last Name</label>
+												<md-input-container>
+													<label class="ph-label">Your Last Name</label>
+													<input type="text" ng-model="checkout.lastName">
+													<div class="error-lable required">Last name text field empty.</div>
+													<div class="error-lable format">Entering the invalid format.</div>
+												</md-input-container>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-6">
+											<div class="input-wrp">
+												<label class="f-label">Email</label>
+												<md-input-container>
+													<label class="ph-label">Your Email</label>
+													<input type="email" ng-model="checkout.email" required ng-pattern='/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/'>
+													<div class="error-lable required">Email text field empty.</div>
+													<div class="error-lable format">Entering the invalid format.</div>
+												</md-input-container>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="input-wrp">
+												<label class="f-label">Mobile Number</label>
+												<md-input-container>
+													<label class="ph-label">Your Mobile Number</label>
+													<input type="text" ng-model="checkout.mobileNumber" required ng-pattern="/^[0-9]{10}$/">
+													<div class="error-lable required">Mobile text field empty.</div>
+													<div class="error-lable format">Entering the invalid format.</div>
+												</md-input-container>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								<div class="input-wrp">
+									<label class="f-label">Choose Payment Method</label>
+									<div class="pay-method-wrp">
+										<div class="razorpay">
+											<div class="row">
+												<div class="col-md-7">
+													<img src="assets/images/cards.png" />
+												</div>
+												<div class="col-md-5">
+													<button class="btn btn-default btn-lg btn-subscribe btn-donate" ng-click="checkout.paythrough='Razorpay'; checkoutForm.submit()"  ng-disable="!checkout.courseId">Pay via Razorpay</button>
+												</div>
+											</div>
+											<p>
+												Accepts all types of payments from Indian/International cards.<br>
+												Very secure, fast and convenient.
+											</p>
+										</div>
+										<div class="paytm">
+											<div class="row">
+												<div class="col-md-7">
+													<img src="assets/images/paytm_card.png" />
+												</div>
+												<div class="col-md-5">
+													<button class="btn btn-default btn-lg btn-subscribe btn-donate" ng-click="checkout.paythrough='Paytm'; checkoutForm.submit()" ng-disable="!checkout.courseId">Pay via Paytm</button>
+												</div>
+											</div>
+											<p>Very secure, fast and convenient.</p>
+										</div>
+									</div>
+								</div>
+								<ul class="cards-list clearfix">
+									<li><img src="assets/images/payment-options.png" width="" /></li>
+								</ul>
+							</div>
+						</form>
+					
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</section>
+<div ng-bind-html='checkoutFrm'></div>
+
+

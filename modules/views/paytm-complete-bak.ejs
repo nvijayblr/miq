@@ -1,0 +1,31 @@
+<html>
+<head>
+<title>Backme Check Out Page</title>
+</head>
+<body style="font-family:arial;">
+	<% if(restdata.txnStatus == 'TXN_SUCCESS') { %>
+		<h1>Your transaction is successfully processed.</h1>
+		<h4>Below is your transaction details.</h4>
+			<% console.log('restdata', restdata)
+			for (name in restdata) { %>
+			
+				<div><%= name %> - <%= restdata[name] %></div>
+
+			<%}%>
+
+	<% }else { %>
+		<h1>Your transaction is Failled/Cancelled.</h1>
+		<h4>Below is your transaction details.</h4>
+			<% for (name in restdata) { %>
+	
+				<div><%= name %> - <%= restdata[name] %></div>
+
+			<%}%>
+	<% } %>
+	<a href="http://supportmytalent.in/#/home">Home</a>
+	<a href="http://supportmytalent.in/#/project/<%= restdata.projectId%>">View Project</a>
+	<script type="text/javascript">
+		location.href="http://supportmytalent.in/#/payment/<%= restdata.orderId%>";
+	</script>
+</body>
+</html>

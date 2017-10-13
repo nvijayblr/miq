@@ -1,0 +1,139 @@
+<form name="rewardsForm" ng-submit="startProfile(rewardsForm.$valid);" novalidate autocomplete="off">
+<section class="content">
+	<div class="create-proj-cont">
+		<div class="create-proj-wrp steps-wrp">
+			<div ng-include="'templates/partials/steps.html'"></div>
+			<div class="steps-content">
+				<div class="row steps-content-basic">
+					<div class="title-wrp box support">
+						<h5 style="margin-left:17px;">Support Rewards</h5>
+						<p class="support-desc">Ask your supporter, a amount in multiples of 500/1000/2000, along with the title and description of the product, service etc that you would offer in return to them. Example: Rs 500 / Electronic Thank you card / Electronic thanks email and card delivered to your personal email.</p>
+						<!--<span class="md-raised md-primary question-info" aria-label="Play">
+							<md-tooltip md-direction="left">
+								<p>Ask your supporter, a amount in multiples of 500/1000/2000, along with the title and description of the product, service etc that you would offer in return to them. Example: Rs 500 / Electronic Thank you card / Electronic thanks email and card delivered to your personal email.</p>
+							</md-tooltip>
+						  <i class="fa fa-question-circle" aria-hidden="true"></i>
+						</span>
+						<span class="tick-green"></span>-->
+					</div>
+					<div ng-repeat="support in project.supportrewards track by $index">
+						<div class="col-md-4 steps-form">
+							<div class="reward-box">
+								<div class="input-wrp">
+									<md-input-container>
+										<i class="fa fa-rupee"></i><label class="ph-label-amt"><span class="txt-amout">500</span></label>
+										<input type="text" class="txt-amout" ng-model="support.amount" name="amount" ng-pattern="/^[0-9,]*$/" required>
+										<div class="error-lable required">Amount text field is empty.</div>
+										<div class="error-lable format">Entering the invalid format.</div>
+									</md-input-container>
+								</div>								
+								<div class="input-wrp title">
+									<md-input-container>
+										<label class="ph-label"><span class="txt-title">Thank you!!!</span></label>
+										<input type="text" class="txt-title" ng-model="support.title" name="amount" required>
+										<div class="error-lable required">Thank you text field is empty.</div>
+										<div class="error-lable format">Entering the invalid format.</div>
+									</md-input-container>
+								</div>								
+								<div class="input-wrp title">
+									<md-input-container>
+										<label class="ph-label"><span class="txt-title">Description</span></label>
+										<textarea  cols="5" class=" txt-title" ng-model="support.description" required></textarea>
+										<div class="error-lable required">Description text field is empty.</div>
+										<div class="error-lable format">Entering the invalid format.</div>
+									</md-input-container>
+								</div>					
+							</div>
+							<a href="" class="delete-rewards" ng-if="project.supportrewards.length>1" ng-click="deleteSupportRewards(project.supportrewards, $index)"><i class="fa fa-trash-o" aria-hidden="true"></i>Delete</a>
+						</div>
+					</div>
+					<div class="col-md-4 steps-form" ng-if="project.supportrewards.length<5">
+						<div class="reward-box-add">
+							<a href="" class="add-box" ng-click="addSupportRewards(project.supportrewards)">+</a>
+						</div>
+					</div>
+				</div>
+				<div class="row steps-content-basic rewards-content">
+					<div class="title-wrp box service">
+						<h5 style="margin-left:17px;">Service Rewards<label class="f-label optional-label">(Optional)</label></h5>
+						<p class="support-desc">Ask your supporter, a amount in multiples of 500/1000/2000, along with the title, time line and description of the service etc that you would offer in return to them. Example: Rs 5000 / an hour of singing performance / 3 months / will come to any event near by home or location to perform an hour.</p>
+						<!--<span class="md-raised md-primary question-info" aria-label="Play">
+							<md-tooltip md-direction="left">
+								<p>Ask your supporter, a amount in multiples of 500/1000/2000, along with the title, time line and description of the service etc that you would offer in return to them. Example: Rs 5000 / an hour of singing performance / 3 months / will come to any event near by home or location to perform an hour.</p>
+							</md-tooltip>
+						  <i class="fa fa-question-circle" aria-hidden="true"></i>
+						</span>
+						<span class="tick-green"></span>-->
+					</div>
+					<div ng-repeat="service in project.servicerewards track by $index">
+						<div class="col-md-4 steps-form">
+							<div class="reward-box">
+								<div class="input-wrp">
+									<md-input-container>
+										<i class="fa fa-rupee"></i><label class="ph-label-amt"><span class="txt-amout">500</span></label>
+										<input type="text" class="txt-amout" ng-model="service.amount" name="amount" ng-pattern="/^[0-9,]*$/"  required>
+										<div class="error-lable required">Amount text field is empty.</div>
+										<div class="error-lable format">Entering the invalid format.</div>
+									</md-input-container>
+								</div>								
+								<div class="input-wrp title">
+									<md-input-container>
+										<label class="ph-label"><span class="txt-title">Activity Name</span></label>
+										<input type="text" class="txt-title" ng-model="service.activityName" name="activity" required>
+										<div class="error-lable">Activity name is required!</div>
+									</md-input-container>
+								</div>								
+								
+								<div class="input-wrp">
+									<md-input-container class="md-block md-time-to-avail" flex-gt-sm>
+										<label class="ph-label">Time to avail service</label>
+										<md-select ng-model="service.availableDate" class="md-time-to-avail" required>
+											<md-option value="3 Months">3 Months</md-option>
+											<md-option value="6 Months">6 Months</md-option>
+										</md-select>
+										<div class="error-lable required">Time to avail service text field is empty.</div>
+										<div class="error-lable format">Entering the invalid format.</div>
+									</md-input-container>
+								</div>
+								<div class="input-wrp title">
+									<md-input-container>
+										<label class="ph-label"><span class="txt-title">Description</span></label>
+										<textarea  cols="5" class=" txt-title" ng-model="service.description" required></textarea>
+										<div class="error-lable required">Description text field is empty.</div>
+										<div class="error-lable format">Entering the invalid format.</div>
+									</md-input-container>
+								</div>								
+							</div>
+							<a href="" class="delete-rewards" ng-click="deleteServiceRewards(project.servicerewards, $index)"><i class="fa fa-trash-o" aria-hidden="true"></i>Delete</a>
+						</div>
+					</div>
+					<div class="col-md-4 steps-form reward-wrapper" ng-if="project.servicerewards.length<5">
+						<div class="reward-box-bg" ng-if="!project.servicerewards.length"></div>
+						<div ng-class="project.servicerewards.length?'':'reward-box'">
+							<div class="reward-box-add">
+								<a href="" class="add-box" ng-click="addServiceRewards(project.servicerewards)">+</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="steps-footer">
+				<div class="row">
+					<div class="col-md-6 col-sm-6 col-xs-6 prev">
+						<a ng-href="{{edit?'#edit/projectdetails/':'#create/projectdetails/'}}{{projectId}}" class="steps-back">
+							<p class="cont">Back to</p>
+							<img src="assets/icons/left-arrow.svg" class="arrow-left"><span>Campaign Details</span>
+						</a>
+					</div>
+					<div class="col-md-6 col-sm-6 col-xs-6 next">
+						<button class="btn btn-default btn-subscribe btn-login steps-back" ng-click="rewardsForm.submit()">
+							<p class="cont">Continue to</p>
+							<p><span>Profile &amp; Account</span><img src="assets/icons/right-arrow.svg" class="arrow-right"></p>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+</form>

@@ -1,0 +1,334 @@
+<form name="profileForm" ng-submit="uploadTeam(project, profileForm.$valid);" novalidate autocomplete="off">
+<section class="content profile-page">
+	<div class="create-proj-cont">
+		<div class="create-proj-wrp steps-wrp">
+			<div ng-include="'templates/partials/steps.html'"></div>
+			<div class="steps-content">
+				<div class="row steps-content-basic">
+					<div class="proj-steps-wrp">
+						<h5>PROFILE INFORMATION</h5>
+						<div class="steps-form">
+							<div class="input-wrp">
+								<label class="f-label">Upload Your Photo</label>
+									<div class="drag-drop-box drop-box user" 
+										 ngf-select = "userCroppedImg=undefined"
+										 ngf-drop = "userCroppedImg=undefined"
+										 ng-model="userImg" 
+										 name="userImg" 
+										 ngf-pattern="'image/*'"
+										 ngf-accept="'image/*'" 
+										 ngf-max-size="15MB" 
+										 ngf-multiple="false"
+										 ngf-model-invalid="errorFile">
+										<div class="upload-userphoto" ng-if="!project.userPhoto && !userImg"></div>
+										<div class="user-img" ng-if="userImg">
+											<img ng-src="{{userCroppedImg}}" width="100%"  height="100%"/>
+										</div>
+										<div class="user-img" ng-if="project.userPhoto && !userImg">
+											<!--Local images-->
+											<div class="user-photo" ng-if="project.userPhoto.substr(0,4)!='http'" style="background-image:url(/uploads/{{project.userPhoto}})"></div>
+											<!--google/fb images-->
+											<div class="user-photo" ng-if="project.userPhoto.substr(0,4)=='http'" style="background-image:url({{project.userPhoto}})"></div>
+										</div>
+									</div>
+									<div ngf-drop ngf-pattern="image/*" class="cropArea" ng-show="userImg">
+										<ui-cropper
+											image="userImg | ngfDataUrl" 
+											result-image="userCroppedImg" 
+											area-type="circle"
+											canvas-scalemode="true"
+											area-min-size="20">
+										</ui-cropper>
+									</div>
+								
+								<span class="error-lable" style="text-align:center; display:block;" ng-show="profileForm.userImg.$error.maxSize">Large size image(more than 15MB)</span>
+							</div>
+							<div class="input-wrp">
+								<label class="f-label">Name</label>
+								<md-input-container>
+									<label class="ph-label">Your name</label>
+									<input type="text" ng-model="project.name" required>
+									<div class="error-lable required">Name text field empty.</div>
+									<div class="error-lable format">Entering the invalid format.</div>
+									<span class="md-raised md-primary question-info" aria-label="Play">
+										<md-tooltip md-direction="left">
+											<p>Enter your complete name.</p>
+										</md-tooltip>
+									  <i class="fa fa-question-circle" aria-hidden="true"></i>
+									</span>
+									<span class="tick-green"></span>
+								</md-input-container>
+							</div>
+							<div class="input-wrp">
+								<label class="f-label">Email</label>
+								<md-input-container>
+									<label class="ph-label">Your email</label>
+									<input type="email" ng-model="project.email" name="email" required ng-pattern='/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/' disabled>
+									<div class="error-lable required">Email text field empty.</div>
+									<div class="error-lable format">Entering the invalid format.</div>
+									<!--<div ng-messages="profileForm.email.$error" ng-show="profileForm.email.$touched">
+										<div ng-message="required">Email is required!</div>
+										<div ng-message="email">Your email address is invalid.</div>
+									</div>-->
+									<span class="md-raised md-primary question-info" aria-label="Play">
+										<md-tooltip md-direction="left">
+											<p>Enter your correct email id.</p>
+										</md-tooltip>
+									  <i class="fa fa-question-circle" aria-hidden="true"></i>
+									</span>
+									<span class="tick-green"></span>
+								</md-input-container>
+							</div>
+							<div class="input-wrp">
+								<label class="f-label">Mobile Number</label>
+								<md-input-container>
+									<label class="ph-label">Your mobile number</label>
+									<input type="text" name="mobile" ng-model="project.mobileNumber" required ng-pattern="/^[0-9]{10}$/">
+									<div class="error-lable" ng-show="!profileForm.mobile.$touched">Mobile number required!</div>
+									<div class="error-lable required">Mobile text field empty.</div>
+									<div class="error-lable format">Entering the invalid format.</div>
+									<span class="md-raised md-primary question-info" aria-label="Play">
+										<md-tooltip md-direction="left">
+											<p>Enter your mobile with country code. Example: +91-9999999999</p>
+										</md-tooltip>
+									  <i class="fa fa-question-circle" aria-hidden="true"></i>
+									</span>
+									<span class="tick-green"></span>
+								</md-input-container>
+							</div>
+							<div class="input-wrp">
+								<div class="title-wrp social">
+									<label class="f-label" style="margin-bottom:20px;">Social Media Connect</label>
+									<span class="md-raised md-primary question-info" aria-label="Play">
+										<md-tooltip md-direction="left">
+											<p>Enter your social media credentials for sharing this project. This will help your supporters to know your better.</p>
+										</md-tooltip>
+									  <i class="fa fa-question-circle" aria-hidden="true"></i>
+									</span>
+									<span class="tick-green"></span>
+								</div>
+								<div class="social-connect">
+									<div class="conenect-wrp">
+									<div class="md-checkbox fb-cb social-cb" fb-login ng-class="project.facebook ? 'md-checked':''">
+										<div class="md-icon"></div>	
+										<div class="md-label">f</div>	
+										<input type="hidden" ng-model="project.facebook">
+									</div>
+									<div class="md-checkbox tw-cb social-cb" ng-class="project.twitter ? 'md-checked':''">
+										<div class="md-icon"></div>	
+										<div class="md-label">t</div>	
+										<input type="hidden" ng-model="project.twitter">
+									</div>	
+									<div class="md-checkbox go-cb social-cb" g-login ng-class="project.googleplus ? 'md-checked':''">
+										<div class="md-icon"></div>	
+										<div class="md-label">g</div>
+										<input type="hidden" ng-model="project.googleplus">
+									</div>
+									<!--<button g-login type="button">Google Login</button>
+									<button linked-in type="button">LinkedIn Login</button>
+									<button fb-login type="button">facebook Login</button>-->
+
+									<!--<md-checkbox md-no-ink ng-model="project.facebook" aria-label="F" class="fb-cb social-cb">f</md-checkbox>
+									<md-checkbox md-no-ink ng-model="project.twitter" aria-label="T" class="tw-cb social-cb">t</md-checkbox>
+									<md-checkbox md-no-ink ng-model="project.googleplus" aria-label="G" class="go-cb social-cb">g</md-checkbox>-->
+									</div>
+								</div>
+							</div>
+						</div>
+						<h5 style="padding-top:25px;">BANK ACCOUNT INFORMATION<label class="f-label optional-label">(Optional)</label></h5>
+						<div class="steps-form">
+							<div class="input-wrp">
+								<label class="f-label">Bank Name</label>
+								<md-input-container class="md-block select" flex-gt-sm>
+									<label class="ph-label">Select Bank</label>
+									<md-select ng-model="project.bankName">
+										<md-option ng-repeat="bank in bankList" value="{{bank.name}}">
+											{{bank.name}}
+										</md-option>
+									</md-select>
+									<div class="error-lable select required">Bank Name text field empty.</div>
+									<div class="error-lable format">Entering the invalid format.</div>
+									<span class="md-raised md-primary question-info" aria-label="Play">
+										<md-tooltip md-direction="left">
+											<p>Give actual bank name where you want to receive the amount [This is NOT a public information but would be used by company to send you the money].</p>
+										</md-tooltip>
+									  <i class="fa fa-question-circle" aria-hidden="true"></i>
+									</span>
+									<span class="tick-green"></span>
+								</md-input-container>
+							</div>
+
+							<div class="input-wrp">
+								<label class="f-label">Account Holder's Name</label>
+								<md-input-container>
+									<label class="ph-label">Your name</label>
+									<input type="text" ng-model="project.accountName">
+									<div class="error-lable required">Account Holder's Name text field empty.</div>
+									<div class="error-lable format">Entering the invalid format.</div>
+									<span class="md-raised md-primary question-info" aria-label="Play">
+										<md-tooltip md-direction="left">
+											<p>Give actual bank account holders name with correct spelling  [This is NOT a public information].</p>
+										</md-tooltip>
+									  <i class="fa fa-question-circle" aria-hidden="true"></i>
+									</span>
+									<span class="tick-green"></span>
+								</md-input-container>
+							</div>
+							<div class="input-wrp">
+								<label class="f-label">Bank Account Number</label>
+								<md-input-container>
+									<label class="ph-label">Account Number</label>
+									<input type="text" ng-model="project.accountNo" ng-pattern="/^[0-9]*$/">
+									<div class="error-lable required">Bank Account Number text field empty.</div>
+									<div class="error-lable format">Entering the invalid format.</div>
+									<span class="md-raised md-primary question-info" aria-label="Play">
+										<md-tooltip md-direction="left">
+											<p>Give actual bank account number [This is NOT a public information].</p>
+										</md-tooltip>
+									  <i class="fa fa-question-circle" aria-hidden="true"></i>
+									</span>
+									<span class="tick-green"></span>
+								</md-input-container>
+							</div>
+							<div class="input-wrp">
+								<label class="f-label">IFSC Code</label>
+								<md-input-container>
+									<label class="ph-label">IFSC Code</label>
+									<input type="text" ng-model="project.ifscCode" name="ifsc" ng-pattern="/^[A-Za-z]{4}\d{7}$/">
+									<div class="error-lable required">IFSC code text field empty.</div>
+									<div class="error-lable format">Entering the invalid format.</div>
+									<span class="md-raised md-primary question-info" aria-label="Play">
+										<md-tooltip md-direction="left">
+											<p>Enter valid IFSC code for the bank account for the electronic money transfer.</p>
+										</md-tooltip>
+									  <i class="fa fa-question-circle" aria-hidden="true"></i>
+									</span>
+									<span class="tick-green"></span>
+								</md-input-container>
+							</div>
+							
+							<div class="input-wrp">
+								<label class="f-label">Bank Address</label>
+								<md-input-container class="textarea bank-address">
+									<label class="ph-label">Address</label>
+									<textarea ng-model="project.bankAddress"></textarea>
+									<div class="error-lable required">Bank Address text field empty.</div>
+									<div class="error-lable format">Entering the invalid format.</div>
+									<span class="md-raised md-primary question-info" aria-label="Play">
+										<md-tooltip md-direction="left">
+											<p>Enter correct bank address.</p>
+										</md-tooltip>
+									  <i class="fa fa-question-circle" aria-hidden="true"></i>
+									</span>
+									<span class="tick-green"></span>
+								</md-input-container>
+							</div>
+						</div>
+						
+						<div class="row steps-content-basic rewards-content">
+							<div class="title-wrp team">
+								<h5 style="margin-left:17px;">TEAM INFORMATION<label class="f-label optional-label">(Optional)</label></h5>
+								<span class="md-raised md-primary question-info" aria-label="Play">
+									<md-tooltip md-direction="left">
+										<p>Mention details of your team , if any, who are part of this project.</p>
+									</md-tooltip>
+								  <i class="fa fa-question-circle" aria-hidden="true"></i>
+								</span>
+								<span class="tick-green"></span>
+							</div>
+							<div ng-repeat="tm in project.team track by $index">
+								<div class="col-md-6 steps-form">
+									<div class="reward-box team-box">
+										<div class="input-wrp">
+											<label class="f-label">Upload Image</label>
+											<div class="drag-drop-box drop-box user" 
+												 ngf-select="tm.croppedImg=undefined"
+												 ngf-drop="tm.croppedImg=undefined"
+												 ng-model="tm.tempPicture" 
+												 name="tm.tempPicture" 
+												 ngf-pattern="'image/*'"
+												 ngf-accept="'image/*'" 
+												 ngf-max-size="15MB" 
+												 ngf-multiple="false"
+												 ngf-model-invalid="errorFile">
+												<div class="upload-teamphoto" ng-if="!tm.picture && !tm.tempPicture"></div>
+												<div class="team-img" ng-if="tm.tempPicture.name">
+													<!--<img ngf-size="{width: 100, height: 100}" ngf-thumbnail="tm.picture">-->
+													<img ng-src="{{tm.croppedImg}}" width="100%"  height="100%"/>
+												</div>
+												<div class="team-img" ng-if="tm.picture && !tm.tempPicture.name">
+													<div class="team-photo" style="background-image:url(uploads/{{tm.picture}})"></div>
+												</div>
+												<span class="error-lable upload">Large size image(more than 15MB) </span>
+												<div class="error-lable pattern">Invalid format like bitmap, tiff.</div>
+											</div>
+											
+											<div ngf-drop ngf-pattern="image/*" class="cropArea" ng-show="tm.tempPicture">
+												<ui-cropper
+													image="tm.tempPicture | ngfDataUrl" 
+													result-image="tm.croppedImg" 
+													area-type="circle"
+													canvas-scalemode="true"
+													area-min-size="20">
+												</ui-cropper>
+											</div>
+
+										</div>
+										<div class="input-wrp title">
+											<md-input-container>
+												<label class="ph-label"><span class="txt-title">Name</span></label>
+												<input type="text" class="txt-title" ng-model="tm.name" name="name" required>
+												<div class="error-lable required">Name text field empty.</div>
+												<div class="error-lable format">Entering the invalid format.</div>
+											</md-input-container>
+										</div>								
+										<div class="input-wrp title">
+											<md-input-container>
+												<label class="ph-label"><span class="txt-title">Designation/Role</span></label>
+												<input type="text" class="txt-title" ng-model="tm.designation" name="designation" required>
+												<div class="error-lable required">Designation text field empty.</div>
+												<div class="error-lable format">Entering the invalid format.</div>
+											</md-input-container>
+										</div>								
+										<div class="input-wrp title">
+											<md-input-container>
+												<label class="ph-label"><span class="txt-title">Profile Link(FB, Linkedin, TW)</span></label>
+												<input type="text" class="txt-title" ng-model="tm.profileLink" name="profile">
+												<div class="error-lable required">Profile Link text field empty.</div>
+												<div class="error-lable format">Entering the invalid format.</div>
+											</md-input-container>
+										</div>								
+									</div>
+									<a href="" class="delete-rewards" ng-click="deleteTeam(project.team, $index)"><i class="fa fa-trash-o" aria-hidden="true"></i>Delete</a>
+								</div>
+							</div>
+							<div class="col-md-6 steps-form" ng-if="project.team.length<5">
+								<div class="reward-box-add team-box-add">
+									<div class="team-add-bg"></div>
+									<a href="" class="add-box" ng-click="addTeam(project.team)">+</a>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+			<div class="steps-footer">
+				<div class="row">
+					<div class="col-md-6 col-sm-6  col-xs-6 prev">
+						<a ng-href="{{edit?'#edit/rewards/':'#create/rewards/'}}{{projectId}}" class="steps-back">
+							<p class="cont">Back to</p>
+							<img src="assets/icons/left-arrow.svg" class="arrow-left"><span>Rewards &amp; Services</span>
+						</a>
+					</div>
+					<div class="col-md-6 col-sm-6 col-xs-6 next">
+						<button class="btn btn-default btn-subscribe btn-login steps-back" ng-click="profileForm.submit()">
+							<p class="cont">Continue to</p>
+							<p><span>Preview &amp; Submit</span><img src="assets/icons/right-arrow.svg" class="arrow-right"></p>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

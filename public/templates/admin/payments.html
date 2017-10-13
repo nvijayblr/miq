@@ -1,0 +1,98 @@
+<section class="filter create">
+	<div class="row admin filter-wrp">
+		<div class="col-sm-6 col-md-5">
+			<div class="input-wrp">
+				<div class="clearfix search-wrp">
+					<input type="text" ng-model="filter.search" class="form-control search-txt" placeholder="Search" />
+					<button type="button" class="btn btn-xs btn-primary search-btn" ng-click="applySearch(filter.search);">Search</button>
+				</div>		
+			</div>
+		</div>
+		<div class="col-sm-6 col-md-7 pull-right">
+			<div class="clearfix">
+				<div class="pull-right">
+					<button type="button" class="btn btn-xs btn-secondary export">Export As XLS</button>
+				</div>
+				<div class="pull-right">
+					<button type="button" class="btn btn-xs btn-primary export">Apply</button>
+				</div>
+				<div class="pull-right">
+					<label class="d-label">To</label>
+					<md-datepicker name="endByDate" ng-model="filter.toDate" md-placeholder="" required></md-datepicker>
+				</div>
+				<div class="pull-right">
+					<label class="d-label">From</label>
+					<md-datepicker name="endByDate" ng-model="filter.fromDate" md-placeholder="" required></md-datepicker>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="clearfix">
+		<p class="pull-left title">Total: {{payments.length}}</p>
+		<!--<button type="button" class="btn btn-xs btn-primary pull-right">Create</button>-->
+	</div>
+</section>
+<table class="table table-hover table-responsive table-striped">
+	<tr>
+		<th ng-click="sortBy('orderId')" class="sort-title">
+			orderId
+			<i ng-show="sort_propertyName == 'orderId'" class="glyphicon glyphicon-triangle-{{sort_reverse? 'bottom':'top'}}"></i>
+			<i ng-hide="sort_propertyName == 'orderId'" class="glyphicon glyphicon-triangle-bottom"></i>
+		</th>
+		<th  ng-click="sortBy('projectId')" class="sort-title">
+			ProjectId
+			<i ng-show="sort_propertyName == 'projectId'" class="glyphicon glyphicon-triangle-{{sort_reverse? 'bottom':'top'}}"></i>
+			<i ng-hide="sort_propertyName == 'projectId'" class="glyphicon glyphicon-triangle-bottom"></i>
+		</th>
+		<th  ng-click="sortBy('firstName')" class="sort-title">
+			Name
+			<i ng-show="sort_propertyName == 'firstName'" class="glyphicon glyphicon-triangle-{{sort_reverse? 'bottom':'top'}}"></i>
+			<i ng-hide="sort_propertyName == 'firstName'" class="glyphicon glyphicon-triangle-bottom"></i>
+		</th>
+		<th  ng-click="sortBy('email')" class="sort-title">
+			Email
+			<i ng-show="sort_propertyName == 'email'" class="glyphicon glyphicon-triangle-{{sort_reverse? 'bottom':'top'}}"></i>
+			<i ng-hide="sort_propertyName == 'email'" class="glyphicon glyphicon-triangle-bottom"></i>
+		</th>
+		<th  ng-click="sortBy('mobileNumber')" class="sort-title">
+			Mobile
+			<i ng-show="sort_propertyName == 'mobileNumber'" class="glyphicon glyphicon-triangle-{{sort_reverse? 'bottom':'top'}}"></i>
+			<i ng-hide="sort_propertyName == 'mobileNumber'" class="glyphicon glyphicon-triangle-bottom"></i>
+		</th>
+		<th  ng-click="sortBy('amount')" class="sort-title">
+			Amount (Rs)
+			<i ng-show="sort_propertyName == 'amount'" class="glyphicon glyphicon-triangle-{{sort_reverse? 'bottom':'top'}}"></i>
+			<i ng-hide="sort_propertyName == 'amount'" class="glyphicon glyphicon-triangle-bottom"></i>
+		</th>
+		<th  ng-click="sortBy('txnDate')" class="sort-title">
+			Date
+			<i ng-show="sort_propertyName == 'txnDate'" class="glyphicon glyphicon-triangle-{{sort_reverse? 'bottom':'top'}}"></i>
+			<i ng-hide="sort_propertyName == 'txnDate'" class="glyphicon glyphicon-triangle-bottom"></i>
+		</th>
+		<th  ng-click="sortBy('txnStatus')" class="sort-title">
+			Status
+			<i ng-show="sort_propertyName == 'txnStatus'" class="glyphicon glyphicon-triangle-{{sort_reverse? 'bottom':'top'}}"></i>
+			<i ng-hide="sort_propertyName == 'txnStatus'" class="glyphicon glyphicon-triangle-bottom"></i>
+		</th>
+		<th  ng-click="sortBy('payThrough')" class="sort-title">
+			Mode
+			<i ng-show="sort_propertyName == 'payThrough'" class="glyphicon glyphicon-triangle-{{sort_reverse? 'bottom':'top'}}"></i>
+			<i ng-hide="sort_propertyName == 'payThrough'" class="glyphicon glyphicon-triangle-bottom"></i>
+		</th>
+	</tr>
+	<tr ng-repeat="payment in payments | orderBy: sort_propertyName:sort_reverse | paginationFilters_startFrom:currentPage*pageSize | limitTo:pageSize track by $index">
+		<td>{{payment.orderId}}</td>
+		<td><a href="#/project/{{payment.projectId}}" target="_blank" class="link">{{payment.projectId}}</a></td>
+		<td>{{payment.name}}</td>
+		<td><a href="mailto:{{payment.email}}?" class="link">{{payment.email}}</a></td>
+		<td>{{payment.mobileNumber}}</td>
+		<td>{{payment.amount}}</td>
+		<td>{{payment.txnDate|ddmmyyyy}}</td>
+		<td>{{payment.txnStatus}}</td>
+		<td>{{payment.payThrough}}</td>
+	</tr>
+</table>
+<div class="center" ng-if="payments.length">
+	<div class="pagination-wrapper" pagination-directive></div>
+</div>
+<div class="center" ng-if="!payments.length">No record found.</div>

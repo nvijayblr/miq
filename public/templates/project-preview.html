@@ -1,0 +1,108 @@
+<section class="proj-content">
+	<div class="container projects-det">
+		<div class="row">
+			<div class="col-md-8 pd">
+				<div class="project-carousel">
+					<ng-image-gallery
+						images="images"
+						methods="methods"
+						thumbnails="true"
+						inline="true"
+						bubbles="true"
+						bubble-size="80"
+						img-bubbles="true"
+						bg-close="false"
+						piracy="false"
+						img-anim="fadeup"
+						on-open=""
+						on-close=""
+						on-video-click="playVideo(img)"
+						on-delete=""></ng-image-gallery>
+				</div>
+				<h1 class="pd-title">{{project.title}}</h1>
+				<p class="pd-desc">{{project.description}}</p>
+				<div class="pd-about">
+					<h4 class="btn-title">About this campaign</h4>
+					<p class="pd-desc">{{project.about}}</p>
+					
+					<h4 class="btn-title">How I will spend money</h4>
+					<div class="row">
+						<div class="col-md-6">
+							<div id="spendmoneyGraph"></div>
+						</div>
+						<div class="col-md-6 col-spendmoney">
+							<div class="spendmoney" ng-repeat="spendmoney in project.spendmoney track by $index">
+								<p class="pd-desc">
+									<i class="fa fa-circle" aria-hidden="true" style="color:{{pieColors[$index]}}"></i>{{spendmoney.amount|toLocale}}.00 - {{spendmoney.description}}
+								</p>
+							</div>
+						</div>
+					</div>
+					
+					<!--<div class="spendmoney" ng-repeat="spendmoney in project.spendmoney track by $index">
+						<p class="pd-desc">
+							<i class="fa fa-rupee" aria-hidden="true"></i>{{spendmoney.amount}}.00 - {{spendmoney.description}}
+						</p>
+					</div>-->
+					
+					<h4 class="btn-title" ng-if="project.team.length">My Team</h4>
+					<div class="row team">
+						<div class="col-md-6" ng-repeat="team in project.team track by $index">
+							<div class="team-wrp clearfix">
+								<div ng-if="team.picture!='null'" style="background-image:url(/uploads/{{team.picture}})" class="team-bg"></div>
+								<div ng-if="team.picture=='null'" class="team-bg-txt">{{team.name.substr(0,2)}}</div>
+								<div class="name pull-left">
+									<h5>{{team.name}}</h5>
+									<p>{{team.designation}}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="support-box user">
+					<div ng-if="!project.userPhoto" style="background-image:url(/assets/images/support-user-bg.jpg)" class="support-user-bg"></div>
+					<div ng-if="project.userPhoto && project.userPhoto.substr(0,4)!='http'" style="background-image:url(/uploads/{{project.userPhoto}})" class="support-user-bg"></div>
+					<div ng-if="project.userPhoto && project.userPhoto.substr(0,4)=='http'" style="background-image:url({{project.userPhoto}})" class="support-user-bg"></div>
+					<div class="user-info">
+						<h3 class="s-user">{{project.name}}</h3>
+						<p class="s-loc"><i class="fa fa-map-marker" aria-hidden="true"></i>{{project.location.display?project.location.display:project.location}}</p>
+						<p class="s-email"><i class="fa fa-envelope" aria-hidden="true"></i>
+							<a href="mailto:{{project.email}}?Subject={{project.title}}">{{project.email}}</a>
+						</p>
+						<a href="https://www.facebook.com/app_scoped_user_id/{{project.facebook}}" target="_blank" class="fb social-link" alt="Facebook" title="Facebook" ng-if="project.facebook">
+							<i class="fa fa-facebook" aria-hidden="true"></i>
+						</a>
+						<a href="" target="_blank" class="fb social-link" alt="Twitter" title="Twitter" ng-if="project.twitter">
+							<i class="fa fa-twitter" aria-hidden="true"></i>
+						</a>
+						<a href="https://plus.google.com/u/0/{{project.googleplus}}" target="_blank" class="fb social-link" alt="Google Plus" title="Google Plus" ng-if="project.googleplus">
+							<i class="fa fa-google-plus" aria-hidden="true"></i>
+						</a>
+					</div>
+				</div>
+				
+				<h4 class="s-proj-title">Support this campaign</h4>
+				<div ng-repeat="supportrewards in project.supportrewards track by $index">
+					<div class="support-box">
+						<h3 class="amount"><i class="fa fa-rupee" aria-hidden="true"></i>{{supportrewards.amount|toLocale}}<sup>.00</sup></h3>
+						<h4 class="s-title">{{supportrewards.title}}</h4>
+						<p class="s-desc">{{supportrewards.description}}</p>
+					</div>
+				</div>
+				
+				<h4 class="s-proj-title" ng-if="project.servicerewards.length">Service this campaign</h4>
+				<div ng-repeat="servicerewards in project.servicerewards track by $index">
+					<div class="support-box">
+						<h3 class="amount"><i class="fa fa-rupee" aria-hidden="true"></i>{{servicerewards.amount|toLocale}}<sup>.00</sup></h3>
+						<h4 class="s-title">{{servicerewards.activityName}}</h4>
+						<p class="s-desc">{{servicerewards.description}}</p>
+						<p class="s-desc">{{servicerewards.availableDate}}</p>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</section>

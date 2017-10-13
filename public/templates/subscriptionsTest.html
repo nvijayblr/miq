@@ -1,0 +1,186 @@
+<!--sMKoNBRZM1M-->
+<section class="content c-subsciptions">
+	<div class="project-carousel" ng-if="course.coverPicture" style="background-image:url(/uploads/{{course.coverPicture}})"></div>
+	<div class="project-carousel" ng-if="!course.coverPicture" style="background-image:url(/assets/images/poster-bg.png)"></div>
+	<div class="create-proj-cont projects-det">
+		<div class="checkout-cont row">
+			<div class="checkout-wrp pd">
+				<div class="project-wrp">
+					<h1 class="pd-title">{{course.title}}</h1>
+					<p class="pd-desc">{{course.description}}</p>
+					<div class="pd-about">
+						<h4 class="btn-title">Curriculum for this Test</h4>
+						<ul class="pd-desc">
+							<li ng-repeat="t in course.tests track by $index">
+								<div class="course-section">
+									<p class="s-title">Test {{$index+1}}</p>
+									<h5>{{t.title}}</h5>
+									<p>{{t.description}}</p>
+									<p class="t-summary">
+										<span class="course-hours"><i class="fa fa-clock-o" aria-hidden="true"></i> {{t.minutes}} Minutes</span> | 
+										<span class="course-hours"><i class="fa fa-question-circle" aria-hidden="true"></i> {{t.totalQuestions}} Questions</span> | 
+										<span class="course-hours"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{t.marks}} Marks</span>
+									</p>
+									<div class="btn-wrapper text-right">
+										<a href="" class="btn btn-xs btn-default btn-primary" ng-if="t.testCompletionStatus=='PENDING'">Continue Test</a>
+										<a href="" class="btn btn-xs btn-default btn-primary" ng-if="t.testCompletionStatus!='PENDING'">Start Test</a>
+									</div>
+								</div>
+							</li>
+						</ul>
+						<div class="prod-design">
+						<h5 class="btn-title"><i class="fa fa-tag" aria-hidden="true"></i>Share this Test</h5>
+						<div class="pd-soc-wrp clearfix">
+							<ul class="clearfix pull-left soc">
+								<li class="likes">
+									<a ng-if="!course.social[0].alreadyLiked" href="" class="li" ng-click="addLike(course)" alt="Like" title="Like">
+										<i class="fa fa-thumbs-up" aria-hidden="true"></i>
+									</a>
+									<a ng-if="course.social[0].alreadyLiked" href="" class="li liked" alt="Liked" title="Liked">
+										<i class="fa fa-thumbs-up" aria-hidden="true"></i>
+									</a>
+								</li>
+								<li>
+									<a href="" class="tw" alt="Share on Facebook" title="Share on Facebook"
+									socialshare
+									socialshare-provider="facebook"
+									socialshare-text="{{course.title}}"
+									socialshare-title="{{course.title}}"
+									socialshare-type="send"
+									socialshare-hashtags="{{course.title}}"
+									socialshare-url="http://localhost:3001/#/course/{{project.code}}">
+									<i class="fa fa-facebook" aria-hidden="true"></i>
+									</a>
+								</li>
+								<li>
+									<a href="" class="tw" alt="Share on Twitter" title="Share on Twitter"
+									socialshare
+									socialshare-provider="twitter"
+									socialshare-text="{{course.title}}"
+									socialshare-hashtags="{{course.title}}"
+									socialshare-url="http://localhost:3001/#/course/{{course.code}}">
+									<i class="fa fa-twitter" aria-hidden="true"></i>
+									</a>
+								</li>
+								<li>
+									<a href="" class="go" alt="Share on Google" title="Share on Google"
+									socialshare
+									socialshare-provider="google"
+									socialshare-text="{{course.title}}"
+									socialshare-hashtags="{{course.title}}"
+									socialshare-url="http://localhost:3001/#/course/{{course.code}}">
+									<i class="fa fa-google-plus" aria-hidden="true"></i>
+									</a>
+								</li>
+								<li>
+									<a href="" class="go" alt="Share on LinkedIn" title="Share on LinkedIn"
+									socialshare
+									socialshare-provider="linkedin"
+									socialshare-text="{{course.title}}"
+									socialshare-description="{{course.title}}"
+									socialshare-hashtags="{{course.title}}"
+									socialshare-url="http://localhost:3001/#/course/{{course.code}}">
+									<i class="fa fa-linkedin" aria-hidden="true"></i>
+									</a>
+								</li>
+							</ul>
+							<ul class="clearfix pull-right views">
+								<li><span class="cnt">{{course.social[0].likesCount}}</span>
+									{{course.social[0].likesCount==1?'Like':'Likes'}}</li>
+								<li><span class="cnt">{{course.social[0].viewsCount}}</span> Views</li>
+							</ul>
+						</div>
+					</div>
+						<h4 class="btn-title">About the Instructor</h4>
+						<div class="row team">
+							<div class="col-md-12"><!-- ng-repeat="team in project.team track by $index"-->
+								<div class="team-wrp clearfix">
+									<div style="background-image:url(assets/images/instructer.jpg)" class="team-bg"></div>
+									<div class="name">
+										<h5>{{instructor.name}}</h5>
+										<h6>{{instructor.designation}}</h6>
+										<p class="social">
+											<a href="mailto:{{instructor.email}}">{{instructor.email}}</a> | 
+											{{instructor.phone}} | 
+											<span ng-if="instructor.facebook">
+												<a href="{{instructor.facebook}}" target="_blank">Facebook</a> | 
+											</span>
+											<span ng-if="instructor.twitter">
+												<a href="{{instructor.twitter}}" target="_blank">Twitter</a> | 
+											</span>
+											<span ng-if="instructor.linkedIn">
+												<a href="{{instructor.linkedIn}}" target="_blank">LinkedIn</a> | 
+											</span>
+											{{instructor.location}} 
+										</p>
+										<p>{{instructor.about}}</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<h4 class="btn-title">Comments ({{comments.length}})</h4>
+						<h3 style="font-size:20px;" ng-if="!loggedUserId">Please login to add a comment.</h3>
+						<div class="comments">
+							<div class="cmt-box" ng-if="loggedUserId">
+								<md-input-container>
+									<label class="ph-label cmt-label">Comments here</label>
+									<textarea ng-model="comment.commentInput" required class="comment-txt"></textarea>
+									<div style="text-align:right">
+										<button class="btn btn-default btn-lg btn-alternate sm-btn add-comment" ng-click="addComment(comment.commentInput, courseId);" ng-disabled="!comment.commentInput.length">POST</button>
+									</div>
+								</md-input-container>
+							</div>
+							<div class="cmt-wrp">
+								<div class="c-wrp clearfix" ng-repeat="c in comments track by $index">
+									<img ng-if="c.users.loginType=='CUSTOM' && c.users.profilePicture" ng-src="uploads/{{c.users.profilePicture}}" class="cmt-bg">
+									<div ng-if="c.users.loginType=='CUSTOM' && !c.users.profilePicture" class="cmt-bg user-bg-div">{{c.users.name.substring(0,1)}}</div>
+									<img ng-if="c.users.loginType!='CUSTOM'" ng-src="{{c.users.profilePicture}}" class="cmt-bg">
+									<div class="name">
+										<h5>{{c.users.name}}<span class="day" am-time-ago="c.comments.commentedOn"></span></h5>
+										<p>{{c.comments.comment}}</p>
+									</div>
+									<div class="abuse-cmt-wrp" ng-if="loggedUserId">
+										<a href="" data-toggle="dropdown" class="dropdown-toggle dots">
+											<i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+										</a>
+										<ul class="dropdown-menu">
+											<li><a href="" ng-click="showAbuseModel(c.comments);">REPORT SPAM OR ABUSE</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!--Abuse comment popup-->
+<div class="modal fade loginModal abuseModel" id="AbuseModel" role="dialog" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <button type="button" class="close" data-dismiss="modal">&times;</button>
+		  <h4 class="modal-title">Report reply</h4>
+		</div>
+		<div class="modal-body">
+			<div class="abuse-input-wrp">
+				<md-radio-group ng-model="abuse.option">
+					<md-radio-button md-no-ink class="md-primary" value="SPAMCONTENT">Unwanted commercial content or spam</md-radio-button>
+					<md-radio-button md-no-ink class="md-primary" value="SEXMATEIAL">Pornography or sexually explicit material</md-radio-button>
+					<md-radio-button md-no-ink class="md-primary" value="VOILENCE">Hate speech or graphic violence</md-radio-button>
+					<md-radio-button md-no-ink class="md-primary" value="HARASSMENT">Harassment or bullying</md-radio-button>
+				</md-radio-group>
+			</div>
+			<div class="btn-wrp">
+				<button type="button" class="btn btn-default btn-secondary" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-default btn-primary" ng-click="submitAbuse(abuse.option)">Submit</button>
+			</div>
+		</div>
+	  </div>
+	</div>
+</div>
+
